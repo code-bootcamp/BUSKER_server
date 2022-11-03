@@ -10,6 +10,6 @@ export class BoardService {
   //   private readonly boardRepository: Repository<Board>,
   // ) {}
   getHello() {
-    return 'Hello';
+    return 'Hello!';
   }
 }
