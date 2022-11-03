@@ -11,7 +11,7 @@ export class MemberImage {
   @Field(() => String)
   image: string;
 
-  // artist 1:1
+  // member 1:1
   // @OneToOne(() => Member)
   // @Field(() => Member)
   // member: Member;
