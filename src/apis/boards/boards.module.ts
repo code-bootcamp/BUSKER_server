@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BoardsResolver } from './board.resolver';
+import { BoardsResolver } from './boards.resolver';
 import { BoardsService } from './boards.service';
 
 @Module({

@@ -3,11 +3,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BoardModule } from './apis/board/board.module';
+import { BoardsModule } from './apis/boards/boards.module';
+import { UsersModule } from './apis/users/users.module';
 
 @Module({
   imports: [
-    BoardModule,
+    BoardsModule,
+    UsersModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

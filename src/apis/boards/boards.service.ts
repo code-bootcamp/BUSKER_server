@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Boards } from './entites/board.entity';
+import { Boards } from './entites/boards.entity';
 
 @Injectable()
 export class BoardsService {
@@ -10,6 +10,7 @@ export class BoardsService {
   //   private readonly boardRepository: Repository<Board>,
   // ) {}
   getHello() {
+    console.log('@');
     return 'Hello!';
   }
 }
