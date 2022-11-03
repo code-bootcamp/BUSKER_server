@@ -12,7 +12,7 @@ export class ArtistImage {
   @Field(() => String)
   image: string;
 
-  // artist 1:1로 연결
+  // artist 1:1
   @OneToOne(() => Artist)
   @Field(() => Artist)
   artist: Artist;
