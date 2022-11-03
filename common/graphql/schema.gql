@@ -2,11 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Category {
+type User {
   id: String!
-  name: String!
+  email: String!
 }
 
 type Query {
-  createBoard: String!
+  boardGetHello: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
 }
