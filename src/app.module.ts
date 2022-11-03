@@ -1,11 +1,12 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsModule } from './apis/boards/boards.module';
 import { UsersModule } from './apis/users/users.module';
-
+import { RedisClientOptions } from 'redis';
+import * as redisStore from 'cache-manager-redis-store';
 @Module({
   imports: [
     BoardsModule,
@@ -26,6 +27,11 @@ import { UsersModule } from './apis/users/users.module';
       synchronize: true,
       logging: true,
       retryAttempts: 30,
+    }),
+    CacheModule.register<RedisClientOptions>({
+      store: redisStore,
+      url: 'redis://team-redis:6379',
+      isGlobal: true,
     }),
   ],
   providers: [],
