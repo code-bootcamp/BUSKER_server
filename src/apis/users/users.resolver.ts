@@ -1,4 +1,4 @@
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/createUserInput';
 import { User } from './entity/user.entity';
@@ -16,5 +16,14 @@ export class UsersResolver {
       throw new ConflictException('User already exists');
     }
     return await this.usersService.create({ ...createUserInput });
+  }
+
+  @Query(() => User)
+  async fetchUser(@Args('email') email: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 }
