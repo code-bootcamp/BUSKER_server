@@ -23,7 +23,7 @@ export class Artist {
   //   @Field(() => ArtistImage)
   //   artist_image: ArtistImage;
 
-  @OneToOne(() => Category)
-  @Field(() => Category)
-  category: Category;
+  // @OneToOne(() => Category)
+  // @Field(() => Category)
+  // category: Category;
 }

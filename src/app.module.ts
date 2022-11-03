@@ -7,10 +7,12 @@ import { BoardsModule } from './apis/boards/boards.module';
 import { UsersModule } from './apis/users/users.module';
 import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
+import { ArtistsModule } from './apis/artists/artists.module';
 @Module({
   imports: [
     BoardsModule,
     UsersModule,
+    ArtistsModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
