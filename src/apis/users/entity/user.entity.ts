@@ -28,11 +28,11 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_artist: boolean;
 
-  @OneToMany(() => Artist, (artist) => artist.id)
-  @Field(() => [Artist])
-  artist: Artist[];
+  // @OneToOne(() => Artist)
+  // @Field(() => Artist)
+  // artist: string;
 
-  @OneToOne(() => UserImage)
-  @Field(() => UserImage)
-  image: UserImage;
+  // @OneToOne(() => UserImage
+  // @Field(() => UserImage)
+  // image: UserImage;
 }
