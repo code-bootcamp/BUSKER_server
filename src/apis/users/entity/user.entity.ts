@@ -27,6 +27,10 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_artist: boolean;
 
+  @Column({ type: 'varchar', length: 100, generated: 'uuid' })
+  @Field(() => String)
+  nickname: string;
+
   // @OneToOne(() => Artist)
   // @Field(() => Artist)
   // artist: string;
