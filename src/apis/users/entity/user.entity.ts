@@ -24,12 +24,12 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_auth: boolean;
 
-  @Column({ default: false, type: 'boolean' })
-  is_artist: boolean;
-
   @Column({ type: 'varchar', length: 100, generated: 'uuid' })
   @Field(() => String)
   nickname: string;
+
+  @Column({ type: 'int', default: 0 })
+  wrong_pass: number;
 
   // @OneToOne(() => Artist)
   // @Field(() => Artist)
