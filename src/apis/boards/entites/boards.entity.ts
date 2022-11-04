@@ -1,6 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-// import { Category } from 'src/apis/category/entites/category.entity';
-
+import { Category } from 'src/apis/categories/entities/categories.entity';
 import {
   Column,
   CreateDateColumn,
@@ -23,28 +22,38 @@ export class Boards {
   @Field(() => String)
   contents: string;
 
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date)
+  start_time: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date)
+  end_time: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date)
+  day: Date;
+
+  @Column({ default: false })
+  @Field(() => Boolean)
+  isShowTime: boolean;
+
   @CreateDateColumn()
   @Field(() => Date)
   createAt: Date;
 
-  @Column()
-  @Field(() => Date)
-  start_time: Date;
-
-  @Column()
-  @Field(() => Date)
-  end_time: Date;
-
-  @Column()
-  @Field(() => Date)
-  day: Date;
-
-  @Column()
-  @Field(() => Boolean)
-  isShowTime: boolean;
-
-  // @JoinColumn()
-  // @OneToOne(() => Category)
-  // @Field(() => Category)
-  // category: Category;
+  @Field(() => [String])
+  category: string[];
 }
