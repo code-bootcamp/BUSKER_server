@@ -1,5 +1,13 @@
 import { Field } from '@nestjs/graphql';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from 'src/apis/categories/entities/categories.entity';
+import { User } from 'src/apis/users/entity/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Artist {
@@ -19,11 +27,15 @@ export class Artist {
   @Field(() => String)
   promotion_url: string;
 
+  @ManyToMany(() => User, (user) => user.liked_artist)
+  @Field(() => [User])
+  user: User[];
+
   //   @OneToOne(() => ArtistImage)
   //   @Field(() => ArtistImage)
   //   artist_image: ArtistImage;
 
-  // @OneToOne(() => Category)
-  // @Field(() => Category)
-  // category: Category;
+  @OneToOne(() => Category)
+  @Field(() => Category)
+  category: Category;
 }
