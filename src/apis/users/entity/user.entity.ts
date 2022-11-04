@@ -1,5 +1,4 @@
-import { Field } from '@nestjs/graphql';
-import { IsEmail } from 'class-validator';
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -9,17 +8,17 @@ import {
 } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: number;
+  id: string;
 
-  @IsEmail()
   @Column({ unique: true, type: 'varchar', length: 20 })
+  @Field(() => String)
   email: string;
 
-  @Column({ type: 'varchar', length: 20 })
-  @Field(() => String)
+  @Column({ type: 'varchar', length: 200 })
   password: string;
 
   @Column({ default: false, type: 'boolean' })
@@ -28,11 +27,15 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_artist: boolean;
 
-  @OneToMany(() => Artist, (artist) => artist.id)
-  @Field(() => [Artist])
-  artist: Artist[];
+  @Column({ type: 'varchar', length: 100, generated: 'uuid' })
+  @Field(() => String)
+  nickname: string;
 
-  @OneToOne(() => UserImage)
-  @Field(() => UserImage)
-  image: UserImage;
+  // @OneToOne(() => Artist)
+  // @Field(() => Artist)
+  // artist: string;
+
+  // @OneToOne(() => UserImage
+  // @Field(() => UserImage)
+  // image: UserImage;
 }
