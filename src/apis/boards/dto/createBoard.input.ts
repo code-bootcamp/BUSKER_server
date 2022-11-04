@@ -6,13 +6,13 @@ export class CreateBoardInput {
   title: string;
 
   @Field(() => String)
-  content: string;
+  contents: string;
 
-  @Field(() => Date)
-  start_Time: Date;
+  @Field(() => String, { nullable: false })
+  start_time: string;
 
-  @Field(() => Date)
-  end_Time: Date;
+  @Field(() => String, { nullable: false })
+  end_time: string;
 
   @Field(() => [String])
   category: [string];

@@ -5,15 +5,19 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsModule } from './apis/boards/boards.module';
 import { UsersModule } from './apis/users/users.module';
+
 import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
 import { env } from 'process';
+
 @Module({
   imports: [
     BoardsModule,
     UsersModule,
+
     ArtistsModule,
+
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
