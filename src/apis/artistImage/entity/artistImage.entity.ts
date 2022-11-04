@@ -1,8 +1,9 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class ArtistImage {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
