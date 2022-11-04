@@ -10,18 +10,19 @@ import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
 import { env } from 'process';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     BoardsModule,
     UsersModule,
-
     ArtistsModule,
-
+    AuthModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: './common/graphql/schema.gql',
+      context: ({ req, res }) => ({ req, res }),
     }),
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as any,

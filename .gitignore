@@ -5,6 +5,8 @@ https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visuals
 
 ### dotenv ###
 .env
+.env*
+yarn.lock
 
 ### Eclipse ###
 .metadata
