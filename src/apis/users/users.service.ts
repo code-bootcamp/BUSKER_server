@@ -34,4 +34,9 @@ export class UsersService {
       ...updateInput,
     });
   }
+
+  async updateWrongPass({ userId, wrong_pass }) {
+    wrong_pass++;
+    return await this.usersRepository.update({ id: userId }, { wrong_pass });
+  }
 }
