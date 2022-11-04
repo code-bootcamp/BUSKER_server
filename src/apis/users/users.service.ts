@@ -11,17 +11,27 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async findOneByEmail(email) {
-    return await this.usersRepository.findOne({ where: { email } });
+  async findOne({ userId }) {
+    return await this.usersRepository.findOne({ where: { id: userId } });
+  }
+  async findOneByEmail({ email }) {
+    return await this.usersRepository.findOne({ where: { email: email } });
   }
 
   async create({ email, password }) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
     const user = await this.usersRepository.save({
       email,
       password: hashedPassword,
     });
     return user;
+  }
+
+  async update({ user, ...updateInput }) {
+    return await this.usersRepository.save({
+      id: user.id,
+      ...user,
+      ...updateInput,
+    });
   }
 }
