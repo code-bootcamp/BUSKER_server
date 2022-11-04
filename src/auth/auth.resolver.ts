@@ -15,6 +15,10 @@ export class AuthResolver {
     @Args('password') password: string,
     @Context() context: IContext,
   ) {
-    return await this.authService.buskerLogin({ email, password, context });
+    return await this.authService.buskerLogin({
+      email,
+      password,
+      context,
+    });
   }
 }

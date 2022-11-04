@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -29,6 +29,7 @@ export class User {
   nickname: string;
 
   @Column({ type: 'int', default: 0 })
+  @Field(() => Int)
   wrong_pass: number;
 
   // @OneToOne(() => Artist)
