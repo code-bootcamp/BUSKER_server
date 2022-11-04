@@ -39,4 +39,9 @@ export class UsersService {
     wrong_pass++;
     return await this.usersRepository.update({ id: userId }, { wrong_pass });
   }
+
+  async delete({ userId }) {
+    const result = await this.usersRepository.delete({ id: userId });
+    return result.affected ? true : false;
+  }
 }
