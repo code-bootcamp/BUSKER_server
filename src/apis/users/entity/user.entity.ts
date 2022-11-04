@@ -1,7 +1,11 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Artist } from 'src/apis/artists/entity/artist.entity';
+
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -32,9 +36,9 @@ export class User {
   @Field(() => Int)
   wrong_pass: number;
 
-  // @OneToOne(() => Artist)
-  // @Field(() => Artist)
-  // artist: string;
+  @ManyToMany(() => Artist)
+  @JoinTable()
+  liked_artist: Artist[];
 
   // @OneToOne(() => UserImage
   // @Field(() => UserImage)
