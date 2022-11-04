@@ -14,6 +14,7 @@ export class UsersService {
   async findOne({ userId }) {
     return await this.usersRepository.findOne({ where: { id: userId } });
   }
+
   async findOneByEmail({ email }) {
     return await this.usersRepository.findOne({ where: { email: email } });
   }
@@ -43,5 +44,19 @@ export class UsersService {
   async delete({ userId }) {
     const result = await this.usersRepository.delete({ id: userId });
     return result.affected ? true : false;
+  }
+
+  async artistLikeToggle({ userId, artistId, status }) {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['liked_artist'],
+    });
+    console.log(user);
+    if (status) {
+      user.liked_artist = [...user.liked_artist, artistId];
+    } else {
+      user.liked_artist = user.liked_artist.filter((id) => id !== artistId);
+    }
+    return await this.usersRepository.save({ ...user });
   }
 }

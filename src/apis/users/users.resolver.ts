@@ -49,4 +49,19 @@ export class UsersResolver {
     }
     return await this.usersService.delete({ userId });
   }
+
+  @Mutation(() => User)
+  async togglesLikeArtist(
+    @Args('userId') userId: string,
+    @Args('artistId') artistId: string,
+    @Args('status') status: boolean,
+  ) {
+    // toggle like artist
+
+    return await this.usersService.artistLikeToggle({
+      userId,
+      artistId,
+      status,
+    });
+  }
 }
