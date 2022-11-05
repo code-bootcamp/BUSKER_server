@@ -62,7 +62,6 @@ export class BoardsService {
       },
     });
 
-    // const categoryId = boardCategory.id;
     const result = await this.boardRepository.find({
       where: {
         category: boardCategory,
@@ -72,6 +71,20 @@ export class BoardsService {
 
     if (result.length === 0) {
       throw new UnprocessableEntityException('조회된 내역이없습니다.');
+    }
+    return result;
+  }
+
+  async findOne({ boardId }) {
+    const result = await this.boardRepository.findOne({
+      where: {
+        id: boardId,
+      },
+      relations: ['category', 'artist'],
+    });
+
+    if (!result) {
+      throw new UnprocessableEntityException('잘못된 조회입니다.');
     }
     return result;
   }
