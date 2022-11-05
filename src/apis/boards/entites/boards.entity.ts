@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 
 import {
@@ -62,4 +63,8 @@ export class Boards {
   @ManyToOne(() => Category)
   @Field(() => Category)
   category: Category;
+
+  @ManyToOne(() => Artist)
+  @Field(() => Artist)
+  artist: Artist;
 }

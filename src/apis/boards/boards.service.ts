@@ -1,6 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Artist } from '../artists/entity/artist.entity';
 import { Category } from '../categories/entities/categories.entity';
 
 import { Boards } from './entites/boards.entity';
@@ -12,10 +13,12 @@ export class BoardsService {
     private readonly boardRepository: Repository<Boards>,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Artist)
+    private readonly artistRepository: Repository<Artist>,
   ) {}
 
   async create({ createBoardInput }) {
-    const { category, ...boards } = createBoardInput;
+    const { title, category, artist, ...boards } = createBoardInput;
 
     const boardCategory = await this.categoryRepository.findOne({
       where: {
@@ -23,9 +26,23 @@ export class BoardsService {
       },
     });
 
+    const boardArtist = await this.artistRepository.findOne({
+      where: {
+        active_name: artist,
+      },
+    });
+
+    if (!boardArtist) {
+      throw new UnprocessableEntityException(
+        '아티스트 등록을 해야 게시글 등록을 할수 있습니다.',
+      );
+    }
+
     const result = await this.boardRepository.save({
+      title: boardArtist.active_name,
       ...boards,
       category: boardCategory,
+      artist: boardArtist,
     });
     return result;
   }
