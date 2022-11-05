@@ -24,6 +24,11 @@ export class BoardsResolver {
     return result;
   }
 
+  @Mutation(() => Boolean)
+  deleteBoard(@Args('boardId') boardId: string) {
+    return this.boardsService.delete({ boardId });
+  }
+
   @Mutation(() => Boards)
   async createBoards(
     @Args({ name: 'createBoardInput', nullable: true })

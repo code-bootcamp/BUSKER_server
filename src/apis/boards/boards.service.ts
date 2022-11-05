@@ -18,7 +18,7 @@ export class BoardsService {
   ) {}
 
   async create({ createBoardInput }) {
-    const { title, category, artist, ...boards } = createBoardInput;
+    const { category, artist, ...boards } = createBoardInput;
 
     const boardCategory = await this.categoryRepository.findOne({
       where: {
@@ -87,5 +87,10 @@ export class BoardsService {
       throw new UnprocessableEntityException('잘못된 조회입니다.');
     }
     return result;
+  }
+
+  async delete({ boardId }) {
+    const result = await this.boardRepository.delete({ id: boardId });
+    return result.affected ? true : false;
   }
 }
