@@ -50,6 +50,7 @@ scalar DateTime
 
 type Query {
   fetchBoards: [Boards!]!
+  fetchBoard(boardId: String!): Boards!
   fetchBoardByCategory(category: String!): [Boards!]!
   fetchUser(userId: String!): User!
 }

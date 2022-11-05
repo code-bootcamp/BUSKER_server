@@ -13,6 +13,10 @@ export class BoardsResolver {
     const result = await this.boardsService.findAll();
     return result;
   }
+  @Query(() => Boards)
+  async fetchBoard(@Args('boardId') boardId: string) {
+    return await this.boardsService.findOne({ boardId });
+  }
 
   @Query(() => [Boards])
   async fetchBoardByCategory(@Args('category') category: string) {
