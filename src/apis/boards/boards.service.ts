@@ -13,18 +13,28 @@ export class BoardsService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
   ) {}
-  getHello() {
-    return 'Hello!';
+
+  async create({ createBoardInput }) {
+    const { category, ...boards } = createBoardInput;
+
+    const boardCategory = await this.categoryRepository.findOne({
+      where: {
+        name: category,
+      },
+    });
+
+    const result = await this.boardRepository.save({
+      ...boards,
+      category: boardCategory,
+    });
+    return result;
   }
 
-  // async create({ createBoardInput }) {
-  //   const { ...boards } = createBoardInput;
-
-  //   const result = await this.boardRepository.save({
-  //     boards,
-  //     ...createBoardInput,
-  //   });
-
-  //   return result;
-  // }
+  async findAll() {
+    const result = await this.boardRepository.find({
+      relations: ['category'],
+    });
+    console.log(result);
+    return result;
+  }
 }

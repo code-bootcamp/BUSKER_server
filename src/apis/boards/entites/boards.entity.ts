@@ -5,6 +5,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -55,6 +59,7 @@ export class Boards {
   @Field(() => Date)
   createAt: Date;
 
-  @Field(() => [String])
-  category: string[];
+  @ManyToOne(() => Category)
+  @Field(() => Category)
+  category: Category;
 }

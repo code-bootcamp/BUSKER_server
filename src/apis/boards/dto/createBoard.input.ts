@@ -14,8 +14,8 @@ export class CreateBoardInput {
   @Field(() => String, { nullable: false })
   end_time: string;
 
-  @Field(() => [String])
-  category: [string];
+  @Field(() => String)
+  category: string;
 
   // @Field(() => [BoardImage])
   // board_image: [BoardImage];
