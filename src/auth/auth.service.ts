@@ -26,6 +26,7 @@ export class AuthService {
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+    return refreshToken;
   }
 
   getAccessToken({ user }) {
@@ -105,5 +106,24 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException('로그아웃을 실패했습니다.');
     }
+  }
+
+  async buskerSocialLogin({ req, res }) {
+    // 1. 가입확인
+    let user = await this.userService.findOneByEmail({
+      email: req.user.email,
+    });
+
+    // 2. 가입되어있지 않다면 , 회원가입
+    if (!user) {
+      user = await this.userService.create({
+        email: req.user.email,
+        password: req.user.password,
+      });
+    }
+
+    // 3. 회원가입이 되어있다면? 토큰 만들어서 프론트엔드에게 보내주기
+    this.setRefreshToken({ user, res });
+    res.redirect('http://localhost:5500/login/index.html');
   }
 }
