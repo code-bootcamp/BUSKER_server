@@ -54,4 +54,25 @@ export class BoardsService {
     console.log(result);
     return result;
   }
+
+  async findCategory({ category }) {
+    const boardCategory = await this.categoryRepository.findOne({
+      where: {
+        name: category,
+      },
+    });
+
+    // const categoryId = boardCategory.id;
+    const result = await this.boardRepository.find({
+      where: {
+        category: boardCategory,
+      },
+      relations: ['category', 'artist'],
+    });
+
+    if (result.length === 0) {
+      throw new UnprocessableEntityException('조회된 내역이없습니다.');
+    }
+    return result;
+  }
 }

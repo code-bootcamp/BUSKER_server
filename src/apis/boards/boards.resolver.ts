@@ -14,6 +14,12 @@ export class BoardsResolver {
     return result;
   }
 
+  @Query(() => [Boards])
+  async fetchBoardByCategory(@Args('category') category: string) {
+    const result = await this.boardsService.findCategory({ category });
+    return result;
+  }
+
   @Mutation(() => Boards)
   async createBoards(
     @Args({ name: 'createBoardInput', nullable: true })
