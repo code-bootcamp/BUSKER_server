@@ -1,10 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -55,6 +60,11 @@ export class Boards {
   @Field(() => Date)
   createAt: Date;
 
-  @Field(() => [String])
-  category: string[];
+  @ManyToOne(() => Category)
+  @Field(() => Category)
+  category: Category;
+
+  @ManyToOne(() => Artist)
+  @Field(() => Artist)
+  artist: Artist;
 }

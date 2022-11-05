@@ -8,18 +8,18 @@ import { Boards } from './entites/boards.entity';
 export class BoardsResolver {
   constructor(private readonly boardsService: BoardsService) {}
 
-  @Query(() => String)
-  boardGetHello() {
-    return this.boardsService.getHello();
+  @Query(() => [Boards])
+  async fetchBoards() {
+    const result = await this.boardsService.findAll();
+    return result;
   }
 
-  // @Mutation(() => Boards)
-  // async createBoards(
-  //   @Args({ name: 'createBoardInput', nullable: true })
-  //   createBoardInput: CreateBoardInput,
-  // ) {
-  //   const result = await this.boardsService.create({ createBoardInput });
-  //   return result;
-  // }
-  cda9ec3d98cae78e343178194eb8f4b1f730524;
+  @Mutation(() => Boards)
+  async createBoards(
+    @Args({ name: 'createBoardInput', nullable: true })
+    createBoardInput: CreateBoardInput,
+  ) {
+    const result = await this.boardsService.create({ createBoardInput });
+    return result;
+  }
 }

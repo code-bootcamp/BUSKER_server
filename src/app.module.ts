@@ -15,9 +15,7 @@ import { env } from 'process';
   imports: [
     BoardsModule,
     UsersModule,
-
     ArtistsModule,
-
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
