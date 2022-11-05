@@ -7,6 +7,9 @@ https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visuals
 .env
 .env*
 yarn.lock
+docker-compose.yaml
+Dockerfile
+.dockerignore
 
 ### Eclipse ###
 .metadata

@@ -1,5 +1,5 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { UsersService } from 'src/apis/users/users.service';
 import { IContext } from 'src/commons/context';
 import { AuthService } from './\bauth.service';
 
@@ -20,5 +20,12 @@ export class AuthResolver {
       password,
       context,
     });
+  }
+  @UseGuards()
+  @Mutation(() => String)
+  async logout(
+    @Context() context: IContext, //
+  ) {
+    return this.authService.buskerLogout({ context });
   }
 }
