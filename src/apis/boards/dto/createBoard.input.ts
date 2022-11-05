@@ -2,8 +2,8 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateBoardInput {
-  @Field(() => String)
-  title: string;
+  // @Field(() => String)
+  // title: string;
 
   @Field(() => String)
   contents: string;
@@ -14,8 +14,11 @@ export class CreateBoardInput {
   @Field(() => String, { nullable: false })
   end_time: string;
 
-  @Field(() => [String])
-  category: [string];
+  @Field(() => String)
+  category: string;
+
+  @Field(() => String)
+  artist: string;
 
   // @Field(() => [BoardImage])
   // board_image: [BoardImage];
