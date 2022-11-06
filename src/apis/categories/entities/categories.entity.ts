@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Boards } from 'src/apis/boards/entites/boards.entity';
 
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 

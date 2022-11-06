@@ -1,11 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
-import { User } from 'src/apis/users/entity/user.entity';
+import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import {
   Column,
   Entity,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -29,15 +30,15 @@ export class Artist {
   @Field(() => String)
   promotion_url: string;
 
-  @ManyToMany(() => User, (user) => user.liked_artist)
-  @Field(() => [User])
-  user: User[];
+  @OneToMany(() => LikeArtist, (likeArtist) => likeArtist.artist)
+  @Field(() => [LikeArtist])
+  pick_user: LikeArtist[];
 
   @OneToOne(() => ArtistImage, { nullable: true })
-  @Field(() => ArtistImage)
-  artist_image: ArtistImage;
+  @Field(() => ArtistImage, { nullable: true })
+  artist_image?: ArtistImage;
 
   @OneToOne(() => Category, { nullable: true })
-  @Field(() => Category)
-  category: Category;
+  @Field(() => Category, { nullable: true })
+  category?: Category;
 }
