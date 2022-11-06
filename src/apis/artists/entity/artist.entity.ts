@@ -5,7 +5,6 @@ import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import {
   Column,
   Entity,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,

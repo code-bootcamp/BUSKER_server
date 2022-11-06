@@ -8,4 +8,4 @@ import { LikeArtistService } from './likeArtist.service';
   imports: [TypeOrmModule.forFeature([LikeArtist])],
   providers: [LikeArtistResolver, LikeArtistService],
 })
-export class LikeModule {}
+export class LikeArtistModule {}

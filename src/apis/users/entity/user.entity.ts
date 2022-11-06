@@ -1,13 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
