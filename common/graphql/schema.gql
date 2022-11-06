@@ -60,7 +60,6 @@ type Query {
   fetchBoard(boardId: String!): Boards!
   fetchBoardByCategory(category: String!): [Boards!]!
   fetchUser(userId: String!): User!
-  SendVerificationEmail(email: String!): String!
 }
 
 type Mutation {
@@ -70,11 +69,8 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(userId: String!, updateUserInput: UpdateUserInput!): User!
   deleteUser(userId: String!): Boolean!
-  confirmVerificationEmail(authNumber: String!, email: String!): Boolean!
   resetPassword(updatePasswordInput: UpdatePasswordInput!): Boolean!
   createArtist(createArtistInput: CreateArtistInput!): Artist!
-  login(email: String!, password: String!): String!
-  logout: String!
 }
 
 input CreateBoardInput {
