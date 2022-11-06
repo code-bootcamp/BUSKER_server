@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { IContext } from 'src/commons/context';
-import { AuthService } from './\bauth.service';
+import { AuthService } from './auth.service';
 
 @Resolver()
 export class AuthResolver {
