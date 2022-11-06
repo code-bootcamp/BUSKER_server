@@ -22,4 +22,13 @@ export class AuthController {
   ) {
     this.authService.buskerSocialLogin({ req, res });
   }
+
+  @Get('/login/kakao')
+  @UseGuards(AuthGuard('kakao'))
+  async loginKakao(
+    @Req() req: Request & IOAuthUser, //
+    @Res() res: Response,
+  ) {
+    this.authService.buskerSocialLogin({ req, res });
+  }
 }
