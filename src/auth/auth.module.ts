@@ -8,12 +8,14 @@ import { JwtGoogleStrategy } from 'src/commons/jwt-social-google';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
+import { JwtKakaoStrategy } from 'src/commons/jwt-social-kakao';
 
 @Module({
   imports: [JwtModule.register({}), TypeOrmModule.forFeature([User])],
   providers: [
     JwtRefreshStrategy,
     JwtGoogleStrategy,
+    JwtKakaoStrategy,
     AuthResolver,
     AuthService,
     UsersService, //
