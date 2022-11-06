@@ -9,11 +9,12 @@ import { UsersModule } from './apis/users/users.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
-import { env } from 'process';
 import { AuthModule } from './auth/auth.module';
+import { LikeModule } from './apis/likeArtist/likeArtist.module';
 
 @Module({
   imports: [
+    LikeModule,
     BoardsModule,
     UsersModule,
     ArtistsModule,

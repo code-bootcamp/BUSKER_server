@@ -866,3 +866,5 @@ docker-compose.yaml
 .dockerignore
 .docker.env
 
+#schema.gql
+schema.gql
