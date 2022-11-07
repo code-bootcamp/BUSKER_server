@@ -42,4 +42,9 @@ export class CommentsService {
   async findAll() {
     return await this.commentRepository.find();
   }
+
+  async delete({ commentId }) {
+    const result = await this.commentRepository.delete({ id: commentId });
+    return result.affected ? true : false;
+  }
 }
