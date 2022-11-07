@@ -31,4 +31,22 @@ export class AuthController {
   ) {
     this.authService.buskerSocialLogin({ req, res });
   }
+
+  @Get('/login/apple')
+  @UseGuards(AuthGuard('apple'))
+  async loginApple(
+    @Req() req: Request & IOAuthUser, //
+    @Res() res: Response,
+  ) {
+    this.authService.buskerSocialLogin({ req, res });
+  }
+
+  @Get('/login/facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async loginFacebook(
+    @Req() req: Request & IOAuthUser, //
+    @Res() res: Response,
+  ) {
+    this.authService.buskerSocialLogin({ req, res });
+  }
 }
