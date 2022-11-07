@@ -19,4 +19,21 @@ export class ArtistsService {
       promotion_url,
     });
   }
+
+  async findOne({ artistId }) {
+    return await this.artistRepository.findOne({ where: { id: artistId } });
+  }
+
+  async update({ artistId, ...updateInput }) {
+    const result = await this.artistRepository.update(
+      { id: artistId },
+      { ...updateInput },
+    );
+    return result.affected ? true : false;
+  }
+
+  async delete({ artistId }) {
+    const result = await this.artistRepository.delete({ id: artistId });
+    return result.affected ? true : false;
+  }
 }
