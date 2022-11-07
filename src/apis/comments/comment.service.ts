@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Boards } from '../boards/entites/boards.entity';
@@ -40,11 +40,34 @@ export class CommentsService {
   }
 
   async findAll() {
-    return await this.commentRepository.find();
+    return await this.commentRepository.find({
+      relations: ['user', 'board'],
+    });
   }
 
   async delete({ commentId }) {
     const result = await this.commentRepository.delete({ id: commentId });
     return result.affected ? true : false;
+  }
+
+  async update({ userId, commentId, content }) {
+    const myComment = await this.commentRepository.findOne({
+      where: {
+        id: commentId,
+      },
+      relations: ['user'],
+    });
+
+    if (myComment.user.id !== userId) {
+      throw new UnprocessableEntityException('내가쓴 댓글만 수정 가능합니다!');
+    }
+
+    const result = await this.commentRepository.save({
+      ...myComment,
+      id: commentId,
+      content: content,
+    });
+
+    return result;
   }
 }
