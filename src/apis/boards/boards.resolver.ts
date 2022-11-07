@@ -8,18 +8,33 @@ import { Boards } from './entites/boards.entity';
 export class BoardsResolver {
   constructor(private readonly boardsService: BoardsService) {}
 
-  @Query(() => String)
-  boardGetHello() {
-    return this.boardsService.getHello();
+  @Query(() => [Boards])
+  async fetchBoards() {
+    const result = await this.boardsService.findAll();
+    return result;
+  }
+  @Query(() => Boards)
+  async fetchBoard(@Args('boardId') boardId: string) {
+    return await this.boardsService.findOne({ boardId });
   }
 
-  // @Mutation(() => Boards)
-  // async createBoards(
-  //   @Args({ name: 'createBoardInput', nullable: true })
-  //   createBoardInput: CreateBoardInput,
-  // ) {
-  //   const result = await this.boardsService.create({ createBoardInput });
-  //   return result;
-  // }
-  cda9ec3d98cae78e343178194eb8f4b1f730524;
+  @Query(() => [Boards])
+  async fetchBoardByCategory(@Args('category') category: string) {
+    const result = await this.boardsService.findCategory({ category });
+    return result;
+  }
+
+  @Mutation(() => Boolean)
+  deleteBoard(@Args('boardId') boardId: string) {
+    return this.boardsService.delete({ boardId });
+  }
+
+  @Mutation(() => Boards)
+  async createBoards(
+    @Args({ name: 'createBoardInput', nullable: true })
+    createBoardInput: CreateBoardInput,
+  ) {
+    const result = await this.boardsService.create({ createBoardInput });
+    return result;
+  }
 }

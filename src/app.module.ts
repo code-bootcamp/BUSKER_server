@@ -10,18 +10,35 @@ import { UsersModule } from './apis/users/users.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
-import { env } from 'process';
+import { AuthModule } from './auth/auth.module';
+import { LikeArtistModule } from './apis/likeArtist/likeArtist.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { CommentModule } from './apis/comments/comment.module';
 
 @Module({
   imports: [
+    CommentModule,
+    LikeArtistModule,
     BoardsModule,
     UsersModule,
     FilesModule,
     ArtistsModule,
+    AuthModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: './common/graphql/schema.gql',
+      context: ({ req, res }) => ({ req, res }),
+    }),
+    MailerModule.forRoot({
+      transport: {
+        service: process.env.MAIL_SERVICE,
+        secure: false, // upgrade later with STARTTLS
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASSWORD,
+        },
+      },
     }),
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as any,

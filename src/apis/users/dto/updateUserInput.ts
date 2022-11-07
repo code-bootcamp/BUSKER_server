@@ -8,9 +8,6 @@ export class UpdateUserInput {
   @Field(() => Boolean, { nullable: true })
   is_auth?: boolean;
 
-  @Field(() => Boolean, { nullable: true })
-  is_artist?: boolean;
-
   @Field(() => String, { nullable: true })
   nickname?: string;
 }

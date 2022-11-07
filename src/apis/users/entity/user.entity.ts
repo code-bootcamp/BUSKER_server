@@ -1,11 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  Entity,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
+
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -24,16 +20,17 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_auth: boolean;
 
-  @Column({ default: false, type: 'boolean' })
-  is_artist: boolean;
-
   @Column({ type: 'varchar', length: 100, generated: 'uuid' })
   @Field(() => String)
   nickname: string;
 
-  // @OneToOne(() => Artist)
-  // @Field(() => Artist)
-  // artist: string;
+  @Column({ type: 'int', default: 0 })
+  @Field(() => Int)
+  wrong_pass: number;
+
+  @OneToMany(() => LikeArtist, (likeArtist) => likeArtist.user)
+  @Field(() => [LikeArtist])
+  liked_artist: LikeArtist[];
 
   // @OneToOne(() => UserImage
   // @Field(() => UserImage)
