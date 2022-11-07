@@ -6,8 +6,8 @@ export class JwtFacebookStrategy extends PassportStrategy(
 ) {
   constructor() {
     super({
-      clientID: process.env.FACEBOOK_CLIEN_ID, //
-      clientSecret: process.env.FACEBOOK_CLIEN_SECRET,
+      clientID: process.env.FACEBOOK_CLIENT_ID, //
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/login/facebook',
       scope: ['public_profile', 'email'],
       profileFields: ['id', 'email'],
