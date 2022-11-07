@@ -10,8 +10,8 @@ export class FilesService {
     // storage 셋팅
     const bucket = 'busket-storage';
     const storage = new Storage({
-      projectId: 'elasticsearch-367106',
-      keyFilename: 'elasticsearch-busket.json',
+      projectId: process.env.ELASTICSEARCH_PROJECT_ID,
+      keyFilename: process.env.ELASTICSEARCH_KEY_FILE_NAME,
     }).bucket(bucket);
 
     // 스토리지에 파일 올리기
@@ -40,8 +40,8 @@ export class FilesService {
     // storage 셋팅
     const bucket = 'busket-storage';
     const storage = new Storage({
-      projectId: 'elasticsearch-367106',
-      keyFilename: 'elasticsearch-busket.json',
+      projectId: process.env.ELASTICSEARCH_PROJECT_ID,
+      keyFilename: process.env.ELASTICSEARCH_KEY_FILE_NAME,
     }).bucket(bucket);
 
     // 스토리지에 파일 올리기
