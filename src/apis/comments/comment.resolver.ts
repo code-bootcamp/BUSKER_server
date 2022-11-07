@@ -16,4 +16,9 @@ export class CommentsResolver {
   fetchComment() {
     return this.commentService.findAll();
   }
+
+  @Mutation(() => Boolean)
+  async deleteComment(@Args('commentId') commentId: string) {
+    return await this.commentService.delete({ commentId });
+  }
 }
