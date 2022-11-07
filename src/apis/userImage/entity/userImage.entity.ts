@@ -8,9 +8,9 @@ export class UserImage {
   @Field(() => String)
   id: string;
 
-  @Column()
-  @Field(() => String)
-  image: string;
+  @Column({ default: '' })
+  @Field(() => String, { nullable: true })
+  url: string;
 
   // userId 1:1로 연결
   @OneToOne(() => User)

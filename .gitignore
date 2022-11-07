@@ -4,12 +4,13 @@ https://www.toptal.com/developers/gitignore/api/dotenv,node,nextjs,visualstudioc
 https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visualstudiocode,visualstudio,intellij,eclipse,windows,macos,linux
 
 ### dotenv ###
-.env
 .env*
 yarn.lock
 docker-compose.yaml
 Dockerfile
 .dockerignore
+/elasticsearch-busker.json
+
 
 ### Eclipse ###
 .metadata

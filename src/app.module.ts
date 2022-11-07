@@ -1,3 +1,4 @@
+import { FilesModule } from './apis/files/files.modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -20,6 +21,7 @@ import { CommentModule } from './apis/comments/comment.module';
     LikeArtistModule,
     BoardsModule,
     UsersModule,
+    FilesModule,
     ArtistsModule,
     AuthModule,
     ConfigModule.forRoot(),
