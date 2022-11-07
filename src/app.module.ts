@@ -1,3 +1,4 @@
+import { FilesModule } from './apis/files/files.modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -10,15 +11,13 @@ import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
 import { env } from 'process';
-import { UserImageModule } from './apis/userImage/userImage.module';
 
 @Module({
   imports: [
     BoardsModule,
     UsersModule,
-    UserImageModule,
+    FilesModule,
     ArtistsModule,
-
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
