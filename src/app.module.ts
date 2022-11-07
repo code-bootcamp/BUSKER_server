@@ -10,12 +10,13 @@ import * as redisStore from 'cache-manager-redis-store';
 import { ArtistsModule } from './apis/artists/artists.module';
 import { RedisClientOptions } from 'redis';
 import { env } from 'process';
+import { UserImageModule } from './apis/userImage/userImage.module';
 
 @Module({
   imports: [
     BoardsModule,
     UsersModule,
-
+    UserImageModule,
     ArtistsModule,
 
     ConfigModule.forRoot(),

@@ -5,6 +5,7 @@ https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visuals
 
 ### dotenv ###
 .env
+/elasticsearch-busket.json
 
 ### Eclipse ###
 .metadata

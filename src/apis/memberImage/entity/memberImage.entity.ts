@@ -9,7 +9,7 @@ export class MemberImage {
 
   @Column()
   @Field(() => String)
-  image: string;
+  url: string;
 
   // member 1:1
   // @OneToOne(() => Member)

@@ -10,7 +10,7 @@ export class ArtistImage {
 
   @Column()
   @Field(() => String)
-  image: string;
+  url: string;
 
   // artist 1:1
   @OneToOne(() => Artist)
