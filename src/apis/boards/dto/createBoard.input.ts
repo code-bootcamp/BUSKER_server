@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { BoardAddressInput } from 'src/apis/boardAddress/dto/createboardAddress.input';
 
 @InputType()
 export class CreateBoardInput {
@@ -20,9 +21,9 @@ export class CreateBoardInput {
   @Field(() => String)
   artist: string;
 
-  // @Field(() => [BoardImage])
-  // board_image: [BoardImage];
+  // @Field(() => [String])
+  // board_image: string[];
 
-  // @Field(() => BoardAddress)
-  // address: BoardAddress;
+  @Field(() => BoardAddressInput)
+  boardAddressInput: BoardAddressInput;
 }

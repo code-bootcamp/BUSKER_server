@@ -2,6 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
+import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
 import { Category } from '../categories/entities/categories.entity';
 
 import { Boards } from './entites/boards.entity';
@@ -15,10 +16,21 @@ export class BoardsService {
     private readonly categoryRepository: Repository<Category>,
     @InjectRepository(Artist)
     private readonly artistRepository: Repository<Artist>,
+    @InjectRepository(BoardAddress)
+    private readonly boardAddressRepository: Repository<BoardAddress>,
   ) {}
 
   async create({ createBoardInput }) {
-    const { category, artist, ...boards } = createBoardInput;
+    const { category, artist, boardAddressInput, ...boards } = createBoardInput;
+
+    console.log(boardAddressInput.address.split(' ')[0]);
+    console.log(boardAddressInput.address.split(' ')[1]);
+
+    const boardAddress = await this.boardAddressRepository.save({
+      address_city: boardAddressInput.address.split(' ')[0],
+      address_district: boardAddressInput.address.split(' ')[1],
+      ...boardAddressInput,
+    });
 
     const boardCategory = await this.categoryRepository.findOne({
       where: {
@@ -43,13 +55,15 @@ export class BoardsService {
       ...boards,
       category: boardCategory,
       artist: boardArtist,
+      boardAddress: boardAddress,
     });
+
     return result;
   }
 
   async findAll() {
     const result = await this.boardRepository.find({
-      relations: ['category'],
+      relations: ['category', 'artist', 'boardAddress'],
     });
     console.log(result);
     return result;
@@ -66,7 +80,7 @@ export class BoardsService {
       where: {
         category: boardCategory,
       },
-      relations: ['category', 'artist'],
+      relations: ['category', 'artist', 'boardAddress'],
     });
 
     if (result.length === 0) {
@@ -80,7 +94,7 @@ export class BoardsService {
       where: {
         id: boardId,
       },
-      relations: ['category', 'artist'],
+      relations: ['category', 'artist', 'boardAddress'],
     });
 
     if (!result) {
