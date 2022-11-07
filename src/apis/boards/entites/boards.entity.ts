@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
+import { BoardAddress } from 'src/apis/boardAddress/entity/boardAddress.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 
 import {
@@ -8,7 +9,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -67,4 +67,9 @@ export class Boards {
   @ManyToOne(() => Artist)
   @Field(() => Artist)
   artist: Artist;
+
+  @JoinColumn()
+  @OneToOne(() => BoardAddress)
+  @Field(() => BoardAddress)
+  boardAddress: BoardAddress;
 }
