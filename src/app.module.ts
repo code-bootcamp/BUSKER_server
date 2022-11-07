@@ -12,9 +12,11 @@ import { RedisClientOptions } from 'redis';
 import { AuthModule } from './auth/auth.module';
 import { LikeArtistModule } from './apis/likeArtist/likeArtist.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { CommentModule } from './apis/comments/comment.module';
 
 @Module({
   imports: [
+    CommentModule,
     LikeArtistModule,
     BoardsModule,
     UsersModule,
