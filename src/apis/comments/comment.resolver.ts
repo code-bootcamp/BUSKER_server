@@ -21,4 +21,13 @@ export class CommentsResolver {
   async deleteComment(@Args('commentId') commentId: string) {
     return await this.commentService.delete({ commentId });
   }
+
+  @Mutation(() => Comments)
+  async updateComment(
+    @Args('commentId') commentId: string,
+    @Args('userId') userId: string,
+    @Args('content') content: string,
+  ) {
+    return this.commentService.update({ commentId, userId, content });
+  }
 }
