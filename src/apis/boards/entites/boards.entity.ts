@@ -28,28 +28,16 @@ export class Boards {
   @Field(() => String)
   contents: string;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
+  @Column()
   @Field(() => Date)
   start_time: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
+  @Column()
   @Field(() => Date)
   end_time: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
-  @Field(() => Date)
+  @Column()
+  @Field(() => Date, { nullable: false })
   day: Date;
 
   @Column({ default: false })
