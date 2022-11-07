@@ -1,6 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { IContext } from 'src/commons/context';
+import { GqlAuthRefreshGuard } from 'src/commons/gql-auth.guard';
+import { CurrentUser } from 'src/commons/gql-user.param';
 import { AuthService } from './auth.service';
 
 @Resolver()
@@ -27,5 +29,13 @@ export class AuthResolver {
     @Context() context: IContext, //
   ) {
     return this.authService.buskerLogout({ context });
+  }
+
+  @UseGuards(GqlAuthRefreshGuard)
+  @Mutation(() => String)
+  restoreAccessToken(
+    @CurrentUser() currentUser: any, //
+  ) {
+    return this.authService.getAccessToken({ user: currentUser });
   }
 }
