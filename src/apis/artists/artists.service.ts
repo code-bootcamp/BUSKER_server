@@ -1,23 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
+import { RoleType } from 'src/commons/role/type/role-type';
 import { Repository } from 'typeorm';
 import { Artist } from './entity/artist.entity';
 
 @Injectable()
 export class ArtistsService {
-  @InjectRepository(Artist)
-  private readonly artistRepository: Repository<Artist>;
+  constructor(
+    @InjectRepository(Artist)
+    private readonly artistRepository: Repository<Artist>,
+    @InjectRepository(UserAuthority)
+    private readonly userAuthorityRepository: Repository<UserAuthority>,
+  ) {}
 
   async findOneWithActiveName({ active_name }) {
     return await this.artistRepository.findOne({ where: { active_name } });
   }
 
-  async create({ active_name, description, promotion_url }) {
-    return await this.artistRepository.save({
+  async create({ active_name, description, promotion_url, userId }) {
+    const artist = await this.artistRepository.save({
       active_name,
       description,
       promotion_url,
     });
+    await this.userAuthorityRepository.save({
+      authority: RoleType.ARTIST,
+      userId: userId,
+    });
+    return artist;
   }
 
   async findOne({ artistId }) {

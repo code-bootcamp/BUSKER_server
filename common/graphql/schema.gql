@@ -4,7 +4,7 @@
 
 type ArtistImage {
   id: String!
-  image: String!
+  url: String!
   artist: Artist!
 }
 
@@ -13,12 +13,19 @@ type Category {
   name: String!
 }
 
+type UserAuthority {
+  id: String!
+  userId: String!
+  authority: String!
+}
+
 type User {
   id: String!
   email: String!
   nickname: String!
   wrong_pass: Int!
   liked_artist: [LikeArtist!]!
+  authorities: [UserAuthority!]!
 }
 
 type LikeArtist {
@@ -55,22 +62,49 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Comments {
+  id: String!
+  content: String!
+  board: Boards!
+  user: User!
+}
+
 type Query {
+  fetchComment: Comments!
   fetchBoards: [Boards!]!
   fetchBoard(boardId: String!): Boards!
   fetchBoardByCategory(category: String!): [Boards!]!
   fetchUser(userId: String!): User!
+  SendVerificationEmail(email: String!): String!
+  fetchArtist(artistId: String!): Artist!
 }
 
 type Mutation {
+  createComment(createCommentInput: CreateCommentInput!): Comments!
+  deleteComment(commentId: String!): Boolean!
+  updateComment(commentId: String!, userId: String!, content: String!): Comments!
   artistLikeToggle(status: Boolean!, userId: String!, artistId: String!): Boolean!
   deleteBoard(boardId: String!): Boolean!
   createBoards(createBoardInput: CreateBoardInput): Boards!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(userId: String!, updateUserInput: UpdateUserInput!): User!
   deleteUser(userId: String!): Boolean!
+  confirmVerificationEmail(authNumber: String!, email: String!): Boolean!
   resetPassword(updatePasswordInput: UpdatePasswordInput!): Boolean!
+  uploadFiles(files: [Upload!]!): [String!]!
+  uploadFile(file: Upload!): String!
   createArtist(createArtistInput: CreateArtistInput!): Artist!
+  updateArtist(artistId: String!, updateArtistInput: UpdateArtistInput!): Boolean!
+  deleteArtist(artistId: String!): Boolean!
+  login(email: String!, password: String!): String!
+  logout: String!
+  restoreAccessToken: String!
+}
+
+input CreateCommentInput {
+  content: String!
+  userId: String!
+  boardId: String!
 }
 
 input CreateBoardInput {
@@ -97,8 +131,17 @@ input UpdatePasswordInput {
   password: String!
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 input CreateArtistInput {
   active_name: String!
   description: String!
   promotion_url: String!
+}
+
+input UpdateArtistInput {
+  active_name: String
+  description: String
+  promotion_url: String
 }

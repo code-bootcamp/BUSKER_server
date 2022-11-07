@@ -10,9 +10,13 @@ import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
 import { JwtKakaoStrategy } from 'src/commons/jwt-social-kakao';
 import { JwtFacebookStrategy } from 'src/commons/jwt-social-facebook';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 
 @Module({
-  imports: [JwtModule.register({}), TypeOrmModule.forFeature([User])],
+  imports: [
+    JwtModule.register({}),
+    TypeOrmModule.forFeature([User, UserAuthority]),
+  ],
   providers: [
     JwtRefreshStrategy,
     JwtGoogleStrategy,
