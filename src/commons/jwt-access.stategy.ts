@@ -6,7 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   constructor(
     @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache, //
+    private readonly cacheManager: Cache,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -15,18 +15,14 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     });
   }
 
-  async validate(req, payload) {
-    const access = req.headers['authorization'].replace('bearer ', '');
-    const cache = await this.cacheManager.get(`accessToken:${access}`);
-
-    // console.log(access);
-    // console.log(cache);
-    if (cache !== null) {
-      throw new UnauthorizedException('로그아웃된 계정입니다.');
+  async validate(req, payload: any) {
+    // 검증된 accessToken 가져오기
+    const accessToken = req.headers.authorization.split(' ')[1];
+    const isExpire = await this.cacheManager.get(`accessToken:${accessToken}`);
+    if (isExpire) {
+      throw new UnauthorizedException('Access Token Expired');
     }
-    return {
-      email: payload.email,
-      id: payload.sub,
-    };
+    console.log('payload.role', payload.role);
+    return { email: payload.email, id: payload.sub, role: payload.role };
   }
 }

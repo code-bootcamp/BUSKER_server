@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -31,6 +32,10 @@ export class User {
   @OneToMany(() => LikeArtist, (likeArtist) => likeArtist.user)
   @Field(() => [LikeArtist])
   liked_artist: LikeArtist[];
+
+  @OneToMany(() => UserAuthority, (userAuthority) => userAuthority.user)
+  @Field(() => [UserAuthority])
+  authorities?: UserAuthority[];
 
   // @OneToOne(() => UserImage
   // @Field(() => UserImage)

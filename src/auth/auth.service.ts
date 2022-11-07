@@ -10,6 +10,10 @@ import { UsersService } from 'src/apis/users/users.service';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Cache } from 'cache-manager';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
+import { Repository } from 'typeorm';
+import { RoleType } from 'src/commons/role/type/role-type';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +22,8 @@ export class AuthService {
     private readonly userService: UsersService,
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
+    @InjectRepository(UserAuthority)
+    private readonly userAuthorityRepository: Repository<UserAuthority>,
   ) {}
 
   setRefreshToken({ user, res }) {
@@ -32,16 +38,28 @@ export class AuthService {
     return result;
   }
 
-  getAccessToken({ user }) {
+  async getAccessToken({ user }) {
+    let role;
+    const auth = await this.userAuthorityRepository.findOne({
+      where: { userId: user.id },
+    });
+    if (!auth) {
+      role = RoleType.USER;
+    } else {
+      role = auth.authority;
+    }
     return this.jwtService.sign(
-      { email: user.email, sub: user.id },
-      { secret: 'myAccessKey', expiresIn: '10s' },
+      {
+        email: user.email,
+        sub: user.id,
+        role,
+      },
+      { secret: process.env.ACCESS_SECRET, expiresIn: '10m' },
     );
   }
 
   async buskerLogin({ email, password, context }) {
     // 1. 유저 이메일 확인
-    console.log(email, password);
 
     const user = await this.userService.findOneByEmail({ email });
     if (!user)
