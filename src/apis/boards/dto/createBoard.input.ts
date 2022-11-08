@@ -24,8 +24,8 @@ export class CreateBoardInput {
   @Field(() => String)
   artist: string;
 
-  // @Field(() => [String])
-  // board_image: string[];
+  @Field(() => [String])
+  board_image: string[];
 
   @Field(() => BoardAddressInput)
   boardAddressInput: BoardAddressInput;
