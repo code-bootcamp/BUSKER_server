@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
 import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
+import { BoardImages } from '../boardImages/entity/boardImages.entity';
 import { Category } from '../categories/entities/categories.entity';
 
 import { Boards } from './entites/boards.entity';
@@ -18,21 +19,27 @@ export class BoardsService {
     private readonly artistRepository: Repository<Artist>,
     @InjectRepository(BoardAddress)
     private readonly boardAddressRepository: Repository<BoardAddress>,
+    @InjectRepository(BoardImages)
+    private readonly boardImagesRepository: Repository<BoardImages>,
   ) {}
 
   async create({ createBoardInput }) {
-    const { category, artist, boardAddressInput, ...boards } = createBoardInput;
+    const { category, artist, board_image, boardAddressInput, ...boards } =
+      createBoardInput;
 
     const start = new Date(createBoardInput.start_time);
     const end = new Date(createBoardInput.end_time);
 
+    const city = boardAddressInput.address.split(' ')[0];
+    const district = `${boardAddressInput.address.split(' ')[0]} ${
+      boardAddressInput.address.split(' ')[1]
+    }`;
+
     const boardAddress = await this.boardAddressRepository.save({
-      address_city: boardAddressInput.address.split(' ')[0],
-      address_district: boardAddressInput.address.split(' ')[1],
+      address_city: city,
+      address_district: district,
       ...boardAddressInput,
     });
-
-    console.log(createBoardInput.start_time.split(' ')[0]);
 
     const boardCategory = await this.categoryRepository.findOne({
       where: {
@@ -51,7 +58,6 @@ export class BoardsService {
         '아티스트 등록을 해야 게시글 등록을 할수 있습니다.',
       );
     }
-
     const result = await this.boardRepository.save({
       title: boardArtist.active_name,
       ...boards,
@@ -61,13 +67,22 @@ export class BoardsService {
       start_time: start,
       end_time: end,
     });
-    console.log(result);
+
+    for (let i = 0; i < board_image.length; i++) {
+      const url = board_image[i];
+
+      await this.boardImagesRepository.save({
+        boards: result,
+        url,
+      });
+    }
+
     return result;
   }
 
   async findAll() {
     const result = await this.boardRepository.find({
-      relations: ['category', 'artist', 'boardAddress'],
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
     console.log(result);
     return result;
@@ -84,7 +99,7 @@ export class BoardsService {
       where: {
         category: boardCategory,
       },
-      relations: ['category', 'artist', 'boardAddress'],
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
 
     if (result.length === 0) {
@@ -98,12 +113,13 @@ export class BoardsService {
       where: {
         id: boardId,
       },
-      relations: ['category', 'artist', 'boardAddress'],
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
 
     if (!result) {
       throw new UnprocessableEntityException('잘못된 조회입니다.');
     }
+
     return result;
   }
 
@@ -115,6 +131,7 @@ export class BoardsService {
   async update({ boardId, updateBoardInput }) {
     const myBoard = await this.boardRepository.findOne({
       where: { id: boardId },
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
 
     if (!myBoard) {
@@ -130,11 +147,24 @@ export class BoardsService {
       },
     });
 
-    if (updateBoardInput.boardAddress) {
+    const boardImages = myBoard.boardImages;
+    console.log(boardImages, 'boardImages');
+    for (let i = 0; i < boardImages.length; i++) {
+      const imageId = boardImages[i].id;
+      await this.boardImagesRepository.delete({
+        id: imageId,
+      });
+    }
+
+    if (updateBoardInput.boardAddressInput) {
       const city = updateBoardInput.boardAddressInput.address.split(' ')[0];
-      const district = updateBoardInput.boardAddressInput.address.split(' ')[1];
+
+      const district = `${
+        updateBoardInput.boardAddressInput.address.split(' ')[0]
+      } ${updateBoardInput.boardAddressInput.address.split(' ')[1]}`;
 
       const boardAddress = await this.boardAddressRepository.save({
+        id: myBoard.boardAddress.id,
         address_city: city,
         address_district: district,
         ...updateBoardInput.boardAddressInput,
@@ -149,17 +179,38 @@ export class BoardsService {
         start_time: start,
         end_time: end,
       });
+
+      const newImage = updateBoardInput.board_image;
+      console.log(newImage, 'newImage');
+      for (let i = 0; i < newImage.length; i++) {
+        const url = newImage[i];
+        await this.boardImagesRepository.save({
+          boards: result,
+          url,
+        });
+      }
+      console.log(result);
       return result;
     } else {
       const result = await this.boardRepository.save({
         ...myBoard,
         id: boardId,
         ...updateBoardInput,
+        boardAddress: myBoard.boardAddress,
         category: myCategory,
         start_time: start,
         end_time: end,
       });
-
+      const newImage = updateBoardInput.board_image;
+      console.log(newImage, 'newImage');
+      for (let i = 0; i < newImage.length; i++) {
+        const url = newImage[i];
+        await this.boardImagesRepository.save({
+          boards: result,
+          url,
+        });
+      }
+      console.log(result);
       return result;
     }
   }

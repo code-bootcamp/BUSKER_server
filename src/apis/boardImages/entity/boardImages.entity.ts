@@ -9,10 +9,10 @@ export class BoardImages {
   id: string;
 
   @Column()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   url: string;
 
-  @ManyToOne(() => Boards)
+  @ManyToOne(() => Boards, (boards) => boards.boardImages)
   @Field(() => Boards)
   boards: Boards;
 }
