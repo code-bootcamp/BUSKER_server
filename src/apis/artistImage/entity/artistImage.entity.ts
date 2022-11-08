@@ -14,7 +14,7 @@ export class ArtistImage {
   url: string;
 
   // artist 1:1
-  @OneToOne(() => Artist)
+  @OneToOne(() => Artist, (artist) => artist.artist_image)
   @Field(() => Artist)
   artist: Artist;
 }

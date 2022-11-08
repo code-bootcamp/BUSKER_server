@@ -5,6 +5,7 @@ import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -33,7 +34,8 @@ export class Artist {
   @Field(() => [LikeArtist])
   pick_user: LikeArtist[];
 
-  @OneToOne(() => ArtistImage, { nullable: true })
+  @JoinColumn()
+  @OneToOne(() => ArtistImage)
   @Field(() => ArtistImage, { nullable: true })
   artist_image?: ArtistImage;
 
