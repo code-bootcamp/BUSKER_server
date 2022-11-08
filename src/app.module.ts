@@ -1,3 +1,4 @@
+import { ArtistImageModule } from './apis/artistImage/artistImage.module';
 import { FilesModule } from './apis/files/files.modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CacheModule, Module } from '@nestjs/common';
@@ -23,6 +24,7 @@ import { CommentModule } from './apis/comments/comment.module';
     UsersModule,
     FilesModule,
     ArtistsModule,
+    ArtistImageModule,
     AuthModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
