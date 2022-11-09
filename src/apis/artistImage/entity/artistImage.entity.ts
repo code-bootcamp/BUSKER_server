@@ -1,6 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -14,7 +20,8 @@ export class ArtistImage {
   url: string;
 
   // artist 1:1
-  @OneToOne(() => Artist, (artist) => artist.artist_image)
+  @JoinColumn()
+  @OneToOne(() => Artist, (artist) => artist.artistImage)
   @Field(() => Artist)
   artist: Artist;
 }

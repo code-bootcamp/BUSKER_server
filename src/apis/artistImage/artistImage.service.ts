@@ -1,3 +1,4 @@
+import { CreateArtistImageInput } from './dto/createArtistImageInput';
 import { FilesService } from './../files/files.service';
 import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Injectable } from '@nestjs/common';
@@ -13,10 +14,17 @@ export class ArtistImageService {
     private readonly filesService: FilesService,
   ) {}
 
-  async upload({ artistImage }) {
-    const url = await this.filesService.uploadFile({
-      file: artistImage,
+  async create({
+    createArtistImageInput,
+  }: {
+    createArtistImageInput: CreateArtistImageInput;
+  }) {
+    const { artistId, ...artistImage } = createArtistImageInput;
+    const result: ArtistImage = await this.artistImageRepository.save({
+      ...artistImage,
+      artist: { id: artistId },
+      relations: ['artist'],
     });
-    return url.toString();
+    return result;
   }
 }
