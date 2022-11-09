@@ -37,6 +37,11 @@ export class BoardsResolver {
     return result;
   }
 
+  @Query(() => [Boards])
+  async fetchRecentBoards(@Args('artistId') artistId: string) {
+    return await this.boardsService.findRecent({ artistId });
+  }
+
   @Mutation(() => Boolean)
   deleteBoard(@Args('boardId') boardId: string) {
     return this.boardsService.delete({ boardId });

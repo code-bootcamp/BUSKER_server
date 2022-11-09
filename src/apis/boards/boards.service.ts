@@ -88,6 +88,28 @@ export class BoardsService {
     return result;
   }
 
+  async findRecent({ artistId }) {
+    const recent = await this.boardRepository.find({
+      where: {
+        artist: {
+          id: artistId,
+        },
+      },
+      relations: ['artist', 'boardImages'],
+    });
+
+    recent.sort(function (a, b) {
+      return b.end_time < a.end_time ? -1 : b.end_time > a.end_time ? 1 : 0;
+    });
+
+    const temp = [];
+    for (let i = 0; i < 3; i++) {
+      temp.push(recent[i]);
+      if (!recent[i]) break;
+    }
+    return temp;
+  }
+
   async findCity({ city }) {
     const result = await this.boardRepository.find({
       where: {
@@ -133,7 +155,13 @@ export class BoardsService {
       where: {
         id: boardId,
       },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      relations: [
+        'category',
+        'artist',
+        'boardAddress',
+        'boardImages',
+        'comments',
+      ],
     });
 
     if (!result) {
