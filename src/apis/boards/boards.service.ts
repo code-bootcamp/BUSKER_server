@@ -88,16 +88,58 @@ export class BoardsService {
     return result;
   }
 
-  async findCategory({ category }) {
-    const boardCategory = await this.categoryRepository.findOne({
+  async findRecent({ artistId }) {
+    const recent = await this.boardRepository.find({
       where: {
-        name: category,
+        artist: {
+          id: artistId,
+        },
       },
+      relations: ['artist', 'boardImages'],
     });
 
+    recent.sort(function (a, b) {
+      return b.end_time < a.end_time ? -1 : b.end_time > a.end_time ? 1 : 0;
+    });
+
+    const temp = [];
+    for (let i = 0; i < 3; i++) {
+      temp.push(recent[i]);
+      if (!recent[i]) break;
+    }
+    return temp;
+  }
+
+  async findCity({ city }) {
     const result = await this.boardRepository.find({
       where: {
-        category: boardCategory,
+        boardAddress: {
+          address_city: city,
+        },
+      },
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+    });
+    return result;
+  }
+
+  async findDistrict({ district }) {
+    const result = await this.boardRepository.find({
+      where: {
+        boardAddress: {
+          address_district: district,
+        },
+      },
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+    });
+    return result;
+  }
+
+  async findCategory({ category }) {
+    const result = await this.boardRepository.find({
+      where: {
+        category: {
+          name: category,
+        },
       },
       relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
@@ -113,7 +155,13 @@ export class BoardsService {
       where: {
         id: boardId,
       },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      relations: [
+        'category',
+        'artist',
+        'boardAddress',
+        'boardImages',
+        'comments',
+      ],
     });
 
     if (!result) {

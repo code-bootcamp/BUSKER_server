@@ -24,6 +24,23 @@ export class BoardsResolver {
     const result = await this.boardsService.findCategory({ category });
     return result;
   }
+  @Query(() => [Boards])
+  async fetchBoardByAddress_city(@Args('city') city: string) {
+    const result = await this.boardsService.findCity({ city });
+    return result;
+  }
+
+  @Query(() => [Boards])
+  async fetchBoardByAddress_district(@Args('district') district: string) {
+    const result = await this.boardsService.findDistrict({ district });
+
+    return result;
+  }
+
+  @Query(() => [Boards])
+  async fetchRecentBoards(@Args('artistId') artistId: string) {
+    return await this.boardsService.findRecent({ artistId });
+  }
 
   @Mutation(() => Boolean)
   deleteBoard(@Args('boardId') boardId: string) {

@@ -3,6 +3,7 @@ import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { BoardAddress } from 'src/apis/boardAddress/entity/boardAddress.entity';
 import { BoardImages } from 'src/apis/boardImages/entity/boardImages.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
+import { Comments } from 'src/apis/comments/entity/comments.entity';
 
 import {
   Column,
@@ -67,4 +68,9 @@ export class Boards {
   @OneToMany(() => BoardImages, (boardImages) => boardImages.boards)
   @Field(() => [BoardImages])
   boardImages: BoardImages[];
+
+  @JoinColumn()
+  @OneToMany(() => Comments, (comments) => comments.board)
+  @Field(() => [Comments])
+  comments: Comments;
 }

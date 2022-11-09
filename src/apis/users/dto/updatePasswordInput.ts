@@ -14,9 +14,6 @@ const passwordRequirement: PasswordValidationRequirement = {
 @InputType()
 export class UpdatePasswordInput {
   @Field(() => String)
-  userId: string;
-
-  @Field(() => String)
   @MinLength(6)
   @MaxLength(20)
   @Validate(PasswordValidation, [passwordRequirement])

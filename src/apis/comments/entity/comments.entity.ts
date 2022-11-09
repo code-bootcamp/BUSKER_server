@@ -14,7 +14,7 @@ export class Comments {
   @Field(() => String)
   content: string;
 
-  @ManyToOne(() => Boards)
+  @ManyToOne(() => Boards, (board) => board.comments)
   @Field(() => Boards)
   board: Boards;
 

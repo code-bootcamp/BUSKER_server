@@ -13,4 +13,7 @@ export class CreateArtistInput {
 
   @Field(() => String, { nullable: true })
   artistImage: string;
+
+  @Field(() => String)
+  category: string;
 }

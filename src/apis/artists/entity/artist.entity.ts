@@ -6,6 +6,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -39,7 +40,8 @@ export class Artist {
   @Field(() => ArtistImage)
   artistImage?: ArtistImage;
 
-  @OneToOne(() => Category, { nullable: true })
+  @ManyToOne(() => Category, { nullable: true })
+  @JoinColumn()
   @Field(() => Category, { nullable: true })
   category?: Category;
 }
