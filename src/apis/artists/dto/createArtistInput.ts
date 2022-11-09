@@ -1,4 +1,3 @@
-import { ArtistImageInput } from './../../artistImage/dto/artistImageInput';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()

@@ -1,5 +1,3 @@
-import { FilesService } from './../files/files.service';
-import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtAccessStrategy } from 'src/commons/jwt-access.stategy';
