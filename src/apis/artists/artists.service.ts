@@ -2,7 +2,6 @@ import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
-import { RoleType } from 'src/commons/role/type/role-type';
 import { Repository } from 'typeorm';
 import { Artist } from './entity/artist.entity';
 
@@ -21,17 +20,13 @@ export class ArtistsService {
     return await this.artistRepository.findOne({ where: { active_name } });
   }
 
-  async create({ active_name, description, promotion_url, userId }) {
-    const artist = await this.artistRepository.save({
+  async create({ active_name, description, promotion_url, category }) {
+    return await this.artistRepository.save({
       active_name,
       description,
       promotion_url,
+      category,
     });
-    await this.userAuthorityRepository.save({
-      authority: RoleType.ARTIST,
-      userId: userId,
-    });
-    return artist;
   }
 
   async findOne({ artistId }) {

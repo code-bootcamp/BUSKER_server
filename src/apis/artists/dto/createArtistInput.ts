@@ -12,6 +12,6 @@ export class CreateArtistInput {
   @Field(() => String)
   promotion_url: string;
 
-  @Field(() => ArtistImageInput, { defaultValue: null })
-  artistImage: ArtistImageInput;
+  @Field(() => String)
+  category: string;
 }

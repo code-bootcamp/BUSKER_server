@@ -1,10 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { User } from 'src/apis/users/entity/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -19,11 +21,20 @@ export class UserAuthority {
   @Field(() => String)
   userId: string;
 
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Field(() => String)
+  artistId: string;
+
   @Column({ type: 'varchar', length: 50 })
   @Field(() => String)
   authority: string;
 
-  @ManyToOne(() => User, (user) => user.authorities)
+  @OneToOne(() => User, (user) => user.authorities)
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @OneToOne(() => Artist, { nullable: true })
+  @JoinColumn({ name: 'artistId' })
+  @Field(() => Artist)
+  artist: Artist;
 }

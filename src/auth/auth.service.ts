@@ -39,20 +39,14 @@ export class AuthService {
   }
 
   async getAccessToken({ user }) {
-    let role;
-    const auth = await this.userAuthorityRepository.findOne({
+    const role = await this.userAuthorityRepository.findOne({
       where: { userId: user.id },
     });
-    if (!auth) {
-      role = RoleType.USER;
-    } else {
-      role = auth.authority;
-    }
     return this.jwtService.sign(
       {
         email: user.email,
         sub: user.id,
-        role,
+        role: role.authority,
       },
       { secret: process.env.ACCESS_SECRET, expiresIn: '10m' },
     );
