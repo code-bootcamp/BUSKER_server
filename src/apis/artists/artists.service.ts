@@ -1,4 +1,3 @@
-import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
@@ -12,8 +11,6 @@ export class ArtistsService {
     private readonly artistRepository: Repository<Artist>,
     @InjectRepository(UserAuthority)
     private readonly userAuthorityRepository: Repository<UserAuthority>,
-    @InjectRepository(ArtistImage)
-    private readonly artistImageRepository: Repository<ArtistImage>,
   ) {}
 
   async findOneWithActiveName({ active_name }) {
