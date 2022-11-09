@@ -88,16 +88,36 @@ export class BoardsService {
     return result;
   }
 
-  async findCategory({ category }) {
-    const boardCategory = await this.categoryRepository.findOne({
-      where: {
-        name: category,
-      },
-    });
-
+  async findCity({ city }) {
     const result = await this.boardRepository.find({
       where: {
-        category: boardCategory,
+        boardAddress: {
+          address_city: city,
+        },
+      },
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+    });
+    return result;
+  }
+
+  async findDistrict({ district }) {
+    const result = await this.boardRepository.find({
+      where: {
+        boardAddress: {
+          address_district: district,
+        },
+      },
+      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+    });
+    return result;
+  }
+
+  async findCategory({ category }) {
+    const result = await this.boardRepository.find({
+      where: {
+        category: {
+          name: category,
+        },
       },
       relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
