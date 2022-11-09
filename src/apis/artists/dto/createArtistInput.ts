@@ -1,4 +1,3 @@
-import { ArtistImageInput } from './../../artistImage/dto/artistImageInput';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -12,6 +11,6 @@ export class CreateArtistInput {
   @Field(() => String)
   promotion_url: string;
 
-  @Field(() => ArtistImageInput, { defaultValue: null })
-  artistImage: ArtistImageInput;
+  @Field(() => String, { nullable: true })
+  artistImage: string;
 }
