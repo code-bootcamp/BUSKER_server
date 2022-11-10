@@ -25,4 +25,11 @@ export class BoardImagesResolver {
   ) {
     return await this.boardImagesService.update({ boardId, urls });
   }
+
+  @Mutation(() => Boolean)
+  async deleteBoardImages(
+    @Args('boardImagesId') boardImagesId: string, //
+  ) {
+    return this.boardImagesService.delete({ boardImagesId });
+  }
 }
