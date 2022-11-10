@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CreateBoardImageInput {
   @Field(() => String)
-  id: string;
+  boardId: string;
 
   @Field(() => [String])
   url: string[];
