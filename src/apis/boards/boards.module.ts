@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Artist } from '../artists/entity/artist.entity';
 import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
 import { BoardImages } from '../boardImages/entity/boardImages.entity';
@@ -17,6 +18,7 @@ import { Boards } from './entites/boards.entity';
       Artist,
       BoardAddress,
       BoardImages,
+      UserAuthority,
     ]),
   ],
 

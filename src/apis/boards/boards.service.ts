@@ -1,5 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
 import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
@@ -21,11 +22,27 @@ export class BoardsService {
     private readonly boardAddressRepository: Repository<BoardAddress>,
     @InjectRepository(BoardImages)
     private readonly boardImagesRepository: Repository<BoardImages>,
+    @InjectRepository(UserAuthority)
+    private readonly userAuthorityRepository: Repository<UserAuthority>,
   ) {}
 
-  async create({ createBoardInput }) {
-    const { category, artist, board_image, boardAddressInput, ...boards } =
-      createBoardInput;
+  async create({ context, createBoardInput }) {
+    const { category, boardAddressInput, ...boards } = createBoardInput;
+
+    const userId = context.req.user.id;
+
+    const auth = await this.userAuthorityRepository.findOne({
+      where: {
+        userId: userId,
+      },
+      relations: ['artist'],
+    });
+
+    const boardCategory = await this.categoryRepository.findOne({
+      where: {
+        id: category,
+      },
+    });
 
     const start = new Date(createBoardInput.start_time);
     const end = new Date(createBoardInput.end_time);
@@ -41,41 +58,15 @@ export class BoardsService {
       ...boardAddressInput,
     });
 
-    const boardCategory = await this.categoryRepository.findOne({
-      where: {
-        name: category,
-      },
-    });
-
-    const boardArtist = await this.artistRepository.findOne({
-      where: {
-        active_name: artist,
-      },
-    });
-
-    if (!boardArtist) {
-      throw new UnprocessableEntityException(
-        '아티스트 등록을 해야 게시글 등록을 할수 있습니다.',
-      );
-    }
     const result = await this.boardRepository.save({
-      title: boardArtist.active_name,
+      title: auth.artist.active_name,
       ...boards,
       category: boardCategory,
-      artist: boardArtist,
+      artist: auth.artist,
       boardAddress: boardAddress,
       start_time: start,
       end_time: end,
     });
-
-    for (let i = 0; i < board_image.length; i++) {
-      const url = board_image[i];
-
-      await this.boardImagesRepository.save({
-        boards: result,
-        url,
-      });
-    }
 
     return result;
   }
@@ -176,7 +167,7 @@ export class BoardsService {
     return result.affected ? true : false;
   }
 
-  async update({ boardId, updateBoardInput }) {
+  async update({ context, boardId, updateBoardInput }) {
     const myBoard = await this.boardRepository.findOne({
       where: { id: boardId },
       relations: ['category', 'artist', 'boardAddress', 'boardImages'],
@@ -191,19 +182,24 @@ export class BoardsService {
 
     const myCategory = await this.categoryRepository.findOne({
       where: {
-        name: updateBoardInput.category,
+        id: updateBoardInput.category,
       },
     });
 
-    const boardImages = myBoard.boardImages;
-    console.log(boardImages, 'boardImages');
-    for (let i = 0; i < boardImages.length; i++) {
-      const imageId = boardImages[i].id;
-      await this.boardImagesRepository.delete({
-        id: imageId,
-      });
-    }
+    const userId = context.req.user.id;
 
+    const auth = await this.userAuthorityRepository.findOne({
+      where: {
+        userId,
+      },
+      relations: ['artist'],
+    });
+
+    if (auth.artistId !== myBoard.artist.id) {
+      throw new UnprocessableEntityException(
+        '다른 아티스트의 글은 수정할수없습니다.',
+      );
+    }
     if (updateBoardInput.boardAddressInput) {
       const city = updateBoardInput.boardAddressInput.address.split(' ')[0];
 
@@ -228,16 +224,6 @@ export class BoardsService {
         end_time: end,
       });
 
-      const newImage = updateBoardInput.board_image;
-      console.log(newImage, 'newImage');
-      for (let i = 0; i < newImage.length; i++) {
-        const url = newImage[i];
-        await this.boardImagesRepository.save({
-          boards: result,
-          url,
-        });
-      }
-      console.log(result);
       return result;
     } else {
       const result = await this.boardRepository.save({
@@ -249,16 +235,7 @@ export class BoardsService {
         start_time: start,
         end_time: end,
       });
-      const newImage = updateBoardInput.board_image;
-      console.log(newImage, 'newImage');
-      for (let i = 0; i < newImage.length; i++) {
-        const url = newImage[i];
-        await this.boardImagesRepository.save({
-          boards: result,
-          url,
-        });
-      }
-      console.log(result);
+
       return result;
     }
   }
