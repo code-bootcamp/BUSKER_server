@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtistImageService } from './artistImage.service';
 import { ArtistImageResolver } from './artistImage.resolver';
 import { Module } from '@nestjs/common';
-import { FilesService } from '../files/files.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ArtistImage, Artist])],

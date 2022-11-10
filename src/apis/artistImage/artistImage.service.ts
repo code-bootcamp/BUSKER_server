@@ -19,6 +19,9 @@ export class ArtistImageService {
     private readonly filesService: FilesService,
   ) {}
 
+  // Create Artist Image
+  // @Param createArtistImageInput 이미지를 등록할 아티스트의 ID와 url
+  // @returns `ArtistImage`
   async create({
     createArtistImageInput,
   }: {
@@ -31,5 +34,33 @@ export class ArtistImageService {
       relations: ['artist'],
     });
     return result;
+  }
+
+  // Update Artist Image API
+  async update({
+    updateArtistImageInput,
+  }: {
+    updateArtistImageInput: UpdateArtistImageInput;
+  }) {
+    const { artistId, ...artistImage } = updateArtistImageInput;
+
+    // 기존 Artist Image 가져오기
+    const artistImageDate = await this.artistImageRepository.findOne({
+      where: { artist: { id: artistId } },
+    });
+
+    if (artistImageDate) {
+      // 기존 이미지 삭제하기
+      this.artistImageRepository.delete({
+        artist: { id: artistId },
+      });
+      // 새로운 이미지 저장하기
+      const result: ArtistImage = await this.artistImageRepository.save({
+        ...artistImage,
+        artist: { id: artistId },
+        relations: ['artist'],
+      });
+      return result;
+    }
   }
 }
