@@ -9,23 +9,17 @@ export class CreateBoardInput {
   @Field(() => String)
   contents: string;
 
-  @Field(() => String, { nullable: false, defaultValue: new Date() })
+  @Field(() => String, { nullable: true, defaultValue: new Date() })
   start_time: string;
 
-  @Field(() => String, { nullable: false, defaultValue: new Date() })
+  @Field(() => String, { nullable: true, defaultValue: new Date() })
   end_time: string;
 
-  @Field(() => String, { nullable: false, defaultValue: new Date() })
+  @Field(() => String, { nullable: true, defaultValue: new Date() })
   day: string;
 
   @Field(() => String)
   category: string;
-
-  @Field(() => String)
-  artist: string;
-
-  @Field(() => [String])
-  board_image: string[];
 
   @Field(() => BoardAddressInput)
   boardAddressInput: BoardAddressInput;
