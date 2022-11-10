@@ -33,4 +33,15 @@ export class ArtistImageResolver {
   ) {
     return await this.artistImageService.update({ updateArtistImageInput });
   }
+
+  // Delete Artist Image API
+  // @type [`Mutation`]
+  // @param artistImageId 삭제할 이미지의 id
+  // @returns 삭제한 경우 `true`, 아닌 경우 `false`
+  @Mutation(() => Boolean)
+  async deleteArtistImage(
+    @Args('artistImageId') artistImageId: string, //
+  ) {
+    return await this.artistImageService.delete({ artistImageId });
+  }
 }

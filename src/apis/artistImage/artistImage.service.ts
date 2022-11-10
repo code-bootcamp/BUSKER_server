@@ -37,6 +37,8 @@ export class ArtistImageService {
   }
 
   // Update Artist Image API
+  // @Param updateArtistImageInput 이미지를 수정할 아티스트의 id와 url
+  // @returns `artistImage`
   async update({
     updateArtistImageInput,
   }: {
@@ -51,7 +53,7 @@ export class ArtistImageService {
 
     if (artistImageDate) {
       // 기존 이미지 삭제하기
-      this.artistImageRepository.delete({
+      this.artistImageRepository.softDelete({
         artist: { id: artistId },
       });
       // 새로운 이미지 저장하기
@@ -62,5 +64,15 @@ export class ArtistImageService {
       });
       return result;
     }
+  }
+
+  // Delete Artist Image
+  // @Param artistImageId 삭제할 이미지의 ID
+  // @return delete result(`true`, `false`)
+  async delete({ artistImageId }: { artistImageId: string }) {
+    const result = await this.artistImageRepository.softDelete({
+      id: artistImageId,
+    });
+    return result.affected ? true : false;
   }
 }
