@@ -77,7 +77,7 @@ export class BoardImagesService {
 
     await Promise.all(
       forDelete.map(async (el) => {
-        return await this.boardImagesRepository.delete({
+        return await this.boardImagesRepository.softDelete({
           boards,
           url: el,
         });
@@ -88,5 +88,12 @@ export class BoardImagesService {
       relations: ['boards'],
     });
     return saveResult;
+  }
+
+  async delete({ boardImagesId }) {
+    const result = await this.boardImagesRepository.softDelete({
+      id: boardImagesId,
+    });
+    return result.affected ? true : false;
   }
 }
