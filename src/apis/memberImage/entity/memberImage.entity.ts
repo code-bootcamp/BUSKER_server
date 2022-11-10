@@ -1,8 +1,15 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Member } from 'src/apis/members/entity/member.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class MemberImage {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
@@ -13,6 +20,7 @@ export class MemberImage {
   url: string;
 
   // member 1:1
+  @JoinColumn()
   @OneToOne(() => Member)
   @Field(() => Member)
   member: Member;

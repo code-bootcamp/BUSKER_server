@@ -1,3 +1,4 @@
+import { UpdateArtistImageInput } from './dto/updateArtistImageInput';
 import { CreateArtistImageInput } from './dto/createArtistImageInput';
 import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { ArtistImageService } from './artistImage.service';
@@ -16,4 +17,14 @@ export class ArtistImageResolver {
   ) {
     return this.artistImageService.create({ createArtistImageInput });
   }
+
+  // @Mutation(() => ArtistImage)
+  // async updateArtistImage(
+  //   @Args('updateArtistImageInput')
+  //   updateArtistImageInput: UpdateArtistImageInput,
+  // ) {
+  //   return await this.artistImageService.update({
+  //     updateArtistImageInput,
+  //   });
+  // }
 }
