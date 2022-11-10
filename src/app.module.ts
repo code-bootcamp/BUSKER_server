@@ -35,6 +35,10 @@ import { MapModule } from './apis/map/map.module';
       driver: ApolloDriver,
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
+      cors: {
+        origin: '*',
+        credentials: true,
+      },
     }),
     MailerModule.forRoot({
       transport: {
