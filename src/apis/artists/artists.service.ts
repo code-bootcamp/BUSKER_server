@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Repository } from 'typeorm';
+import { Category } from '../categories/entities/categories.entity';
 import { Artist } from './entity/artist.entity';
 
 @Injectable()
@@ -27,7 +28,10 @@ export class ArtistsService {
   }
 
   async findOne({ artistId }) {
-    return await this.artistRepository.findOne({ where: { id: artistId } });
+    return await this.artistRepository.findOne({
+      where: { id: artistId },
+      relations: ['artist_image', 'category'],
+    });
   }
 
   async update({ artistId, ...updateInput }) {

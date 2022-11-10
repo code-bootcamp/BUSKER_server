@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { LikeArtistModule } from './apis/likeArtist/likeArtist.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentModule } from './apis/comments/comment.module';
+import { MapModule } from './apis/map/map.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CommentModule } from './apis/comments/comment.module';
     ArtistsModule,
     ArtistImageModule,
     AuthModule,
+    MapModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
