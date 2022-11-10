@@ -21,7 +21,7 @@ export class ArtistImage {
 
   // artist 1:1
   @JoinColumn()
-  @OneToOne(() => Artist, (artist) => artist.artistImage)
+  @OneToOne(() => Artist, (artist) => artist.artist_image)
   @Field(() => Artist)
   artist: Artist;
 }
