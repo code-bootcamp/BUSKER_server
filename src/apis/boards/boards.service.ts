@@ -75,7 +75,6 @@ export class BoardsService {
     const result = await this.boardRepository.find({
       relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
-    console.log(result);
     return result;
   }
 
