@@ -36,7 +36,7 @@ import { MapModule } from './apis/map/map.module';
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: true,
+        origin: 'https://busker.shop',
         credentials: true,
       },
     }),
