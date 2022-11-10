@@ -1,6 +1,7 @@
 import {
   ConflictException,
   NotFoundException,
+  UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
@@ -72,7 +73,7 @@ export class UsersResolver {
   }
 
   @UseGuards(GqlAuthAccessGuard)
-  @Query(() => String)
+  @Mutation(() => String)
   async SendVerificationEmail(@CurrentUser() currentUser) {
     const authNumber = await this.usersService.createAuthNumber();
     const template = await this.usersService.getTemplate({
@@ -109,6 +110,41 @@ export class UsersResolver {
     return await this.usersService.updatePassword({
       userId: currentUser.id,
       ...updatePasswordInput,
+    });
+  }
+
+  @Mutation(() => String)
+  async nonLoginSendVerificationEmail(@Args('email') email: string) {
+    const isExist = await this.usersService.findOneByEmail({ email });
+    if (!isExist) {
+      throw new UnprocessableEntityException('User not exists');
+    }
+    const authNumber = await this.usersService.createAuthNumber();
+    const template = await this.usersService.getTemplate({
+      email,
+      authNumber,
+    });
+    const result = await this.usersService.sendEmail({
+      email,
+      template,
+      authNumber,
+    });
+
+    return result;
+  }
+
+  @Mutation(() => Boolean)
+  async nonLoginConfirmVerificationEmail(
+    @Args('authNumber') authNumber: string,
+    @Args('email') email: string,
+  ) {
+    const isExist = await this.usersService.findOneByEmail({ email });
+    if (!isExist) {
+      throw new UnprocessableEntityException('User not exists');
+    }
+    return await this.usersService.verifyAuthNumber({
+      email,
+      authNumber,
     });
   }
 }
