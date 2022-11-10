@@ -36,8 +36,8 @@ import { MapModule } from './apis/map/map.module';
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: '*',
-        credentials: false,
+        origin: true,
+        credentials: true,
       },
     }),
     MailerModule.forRoot({
