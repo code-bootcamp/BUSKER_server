@@ -1,4 +1,6 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlAuthAccessGuard } from 'src/commons/gql-auth.guard';
 import { CommentsService } from './comment.service';
 import { CreateCommentInput } from './dto/createComment.input';
 import { Comments } from './entity/comments.entity';
@@ -6,28 +8,37 @@ import { Comments } from './entity/comments.entity';
 @Resolver()
 export class CommentsResolver {
   constructor(private readonly commentService: CommentsService) {}
+
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Comments)
   async createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput, //
+    @Context() context: any,
   ) {
-    return await this.commentService.create({ createCommentInput });
+    return await this.commentService.create({ context, createCommentInput });
   }
+
   @Query(() => Comments)
-  fetchComment() {
-    return this.commentService.findAll();
+  fetchComment(@Args('boardId') boardId: string) {
+    return this.commentService.findOne({ boardId });
   }
 
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Boolean)
-  async deleteComment(@Args('commentId') commentId: string) {
-    return await this.commentService.delete({ commentId });
+  async deleteComment(
+    @Args('commentId') commentId: string,
+    @Context() context: any,
+  ) {
+    return await this.commentService.delete({ context, commentId });
   }
 
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => Comments)
   async updateComment(
     @Args('commentId') commentId: string,
-    @Args('userId') userId: string,
     @Args('content') content: string,
+    @Context() context: any,
   ) {
-    return this.commentService.update({ commentId, userId, content });
+    return this.commentService.update({ context, commentId, content });
   }
 }

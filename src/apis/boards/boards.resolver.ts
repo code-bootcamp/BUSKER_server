@@ -20,7 +20,7 @@ export class BoardsResolver {
     return result;
   }
 
-  // @UseGuards(GqlAuthAccessGuard)
+  @UseGuards(GqlAuthAccessGuard)
   @Query(() => Boards)
   async fetchBoard(
     @Args('boardId') boardId: string, //

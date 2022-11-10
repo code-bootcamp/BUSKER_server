@@ -16,56 +16,58 @@ export class CommentsService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create({ createCommentInput }) {
-    const { userId, boardId } = createCommentInput;
-
-    const user = await this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
-
+  async create({ context, createCommentInput }) {
     const board = await this.boardsRepository.findOne({
-      where: { id: boardId },
+      where: { id: createCommentInput.userId },
     });
-
     const result = await this.commentRepository.save({
       ...createCommentInput,
-      user: user,
-      board: board,
+      user: context.req.user,
+      board,
     });
 
-    console.log(result);
     return result;
   }
 
-  async findAll() {
-    return await this.commentRepository.find({
+  async findOne({ boardId }) {
+    return await this.commentRepository.findOne({
+      where: {
+        board: boardId,
+      },
       relations: ['user', 'board'],
     });
   }
 
-  async delete({ commentId }) {
-    const result = await this.commentRepository.delete({ id: commentId });
-    return result.affected ? true : false;
-  }
-
-  async update({ userId, commentId, content }) {
-    const myComment = await this.commentRepository.findOne({
+  async delete({ context, commentId }) {
+    const comment = await this.commentRepository.findOne({
       where: {
         id: commentId,
       },
       relations: ['user'],
     });
 
-    if (myComment.user.id !== userId) {
-      throw new UnprocessableEntityException('내가쓴 댓글만 수정 가능합니다!');
+    if (comment.user.id !== context.req.user.id) {
+      throw new UnprocessableEntityException('내가 쓴 댓글만 삭제 가능합니다.');
     }
+    const result = await this.commentRepository.delete({ id: commentId });
+    return result.affected ? true : false;
+  }
 
+  async update({ context, commentId, content }) {
+    const myComment = await this.commentRepository.findOne({
+      where: {
+        id: commentId,
+      },
+      relations: ['user', 'board'],
+    });
+
+    if (myComment.user.id !== context.req.user.id) {
+      throw new UnprocessableEntityException('내가 쓴 댓글만 수정가능합니다.');
+    }
     const result = await this.commentRepository.save({
       ...myComment,
       id: commentId,
-      content: content,
+      content,
     });
 
     return result;
