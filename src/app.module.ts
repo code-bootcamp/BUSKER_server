@@ -37,7 +37,6 @@ import { MapModule } from './apis/map/map.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         origin: '*',
-        credentials: true,
       },
     }),
     MailerModule.forRoot({
