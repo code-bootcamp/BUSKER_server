@@ -36,7 +36,7 @@ export class Artist {
   pick_user: LikeArtist[];
 
   @JoinColumn()
-  @OneToOne(() => ArtistImage)
+  @OneToOne(() => ArtistImage, (artist_image) => artist_image.artist)
   @Field(() => ArtistImage, { nullable: true })
   artist_image?: ArtistImage;
 
