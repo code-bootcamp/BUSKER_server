@@ -1,0 +1,38 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LikeArtist } from './entity/likeArtist.entity';
+
+@Injectable()
+export class LikeArtistService {
+  constructor(
+    @InjectRepository(LikeArtist)
+    private readonly likeArtistRepository: Repository<LikeArtist>,
+  ) {}
+
+  async findLikesByArtistId({ artistId }) {
+    return await this.likeArtistRepository.find({
+      where: { artist: artistId },
+    });
+  }
+
+  async findLikesByUserId({ userId }) {
+    return await this.likeArtistRepository.find({ where: { user: userId } });
+  }
+
+  async create({ userId, artistId }) {
+    const result = await this.likeArtistRepository.save({
+      user: userId,
+      artist: artistId,
+    });
+    return result ? true : false;
+  }
+
+  async delete({ userId, artistId }) {
+    const result = await this.likeArtistRepository.delete({
+      user: userId,
+      artist: artistId,
+    });
+    return result.affected ? true : false;
+  }
+}
