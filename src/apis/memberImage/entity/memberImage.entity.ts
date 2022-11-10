@@ -21,7 +21,7 @@ export class MemberImage {
 
   // member 1:1
   @JoinColumn()
-  @OneToOne(() => Member)
+  @OneToOne(() => Member, (member) => member.memberImage)
   @Field(() => Member)
   member: Member;
 }
