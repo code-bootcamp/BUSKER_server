@@ -1,4 +1,3 @@
-import { CreateBoardImageInput } from './dto/createBoardImage.input';
 import { BoardImages } from 'src/apis/boardImages/entity/boardImages.entity';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { BoardImagesService } from './boardImages.service';
@@ -16,6 +15,14 @@ export class BoardImagesResolver {
     @Args('boardId') boardId: string, //
     @Args({ name: 'urls', type: () => [String] }) urls: string[],
   ) {
-    return this.boardImagesService.create({ boardId, urls });
+    return await this.boardImagesService.create({ boardId, urls });
+  }
+
+  @Mutation(() => [BoardImages])
+  async updateBoardImages(
+    @Args('boardId') boardId: string, //
+    @Args({ name: 'urls', type: () => [String] }) urls: string[],
+  ) {
+    return await this.boardImagesService.update({ boardId, urls });
   }
 }
