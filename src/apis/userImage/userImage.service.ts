@@ -58,4 +58,14 @@ export class UserImageService {
       return result;
     }
   }
+
+  // Delete User Image
+  // @param userImageId 삭제할 이미지의 ID
+  // @return delete result(`true`, `false`)
+  async delete({ userImageId }: { userImageId: string }) {
+    const result = await this.userImageRepository.softDelete({
+      id: userImageId,
+    });
+    return result.affected ? true : false;
+  }
 }

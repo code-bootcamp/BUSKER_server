@@ -33,4 +33,15 @@ export class UserImageResolver {
   ) {
     return await this.userImageService.update({ updateUserImageInput });
   }
+
+  // Delete User Image API
+  // @type [`Mutation`]
+  // @param userImageId 삭제할 이미지의 id
+  // @returns 삭제한 경우 `true`, 아닌 경우 `false`
+  @Mutation(() => Boolean)
+  async deleteUserImage(
+    @Args('userImageId') userImageId: string, //
+  ) {
+    return await this.userImageService.delete({ userImageId });
+  }
 }
