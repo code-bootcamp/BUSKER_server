@@ -6,6 +6,7 @@ import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -44,7 +45,8 @@ export class User {
   @Field(() => UserAuthority)
   authorities?: UserAuthority;
 
-  @OneToOne(() => UserImage)
-  @Field(() => UserImage)
-  image: UserImage;
+  @JoinColumn()
+  @OneToOne(() => UserImage, (userImage) => userImage.user)
+  @Field(() => UserImage, { nullable: true })
+  userImage: UserImage;
 }

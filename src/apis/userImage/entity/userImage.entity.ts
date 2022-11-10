@@ -15,13 +15,13 @@ export class UserImage {
   @Field(() => String)
   id: string;
 
-  @Column({ default: '' })
-  @Field(() => String, { nullable: true })
+  @Column()
+  @Field(() => String)
   url: string;
 
   // user 1:1로 연결
   @JoinColumn()
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.userImage)
   @Field(() => User)
   user: User;
 }
