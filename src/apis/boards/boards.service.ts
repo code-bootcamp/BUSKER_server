@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
 import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
 import { BoardImages } from '../boardImages/entity/boardImages.entity';
@@ -25,7 +25,18 @@ export class BoardsService {
     @InjectRepository(UserAuthority)
     private readonly userAuthorityRepository: Repository<UserAuthority>,
   ) {}
-
+  paging({ value, page }) {
+    const arr = [];
+    for (let i = 0; i < value.length; i++) {
+      const temp = [];
+      for (let j = 0; j < 12; j++) {
+        temp.push(value.shift());
+        if (value.length === 0) break;
+      }
+      arr.push(temp);
+    }
+    return arr[page - 1];
+  }
   async create({ context, createBoardInput }) {
     const { category, boardAddressInput, ...boards } = createBoardInput;
 
@@ -71,11 +82,56 @@ export class BoardsService {
     return result;
   }
 
-  async findAll() {
-    const result = await this.boardRepository.find({
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
-    });
-    return result;
+  async findAll({ searchBoardInput }) {
+    const { page, category, district } = searchBoardInput;
+
+    if (category && district) {
+      const value = await this.boardRepository.find({
+        where: {
+          category: {
+            id: In(category),
+          },
+          boardAddress: {
+            address_district: district,
+          },
+        },
+        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      });
+
+      return this.paging({ value, page });
+    }
+
+    if (!category) {
+      const value = await this.boardRepository.find({
+        where: {
+          boardAddress: {
+            address_district: district,
+          },
+        },
+        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      });
+
+      return this.paging({ value, page });
+    }
+
+    if (!district) {
+      const value = await this.boardRepository.find({
+        where: {
+          category: {
+            id: In(category),
+          },
+        },
+        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      });
+
+      return this.paging({ value, page });
+    }
+
+    if (!category && !district) {
+      const value = await this.boardRepository.find();
+
+      return this.paging({ value, page });
+    }
   }
 
   async findRecent({ artistId }) {
@@ -128,11 +184,12 @@ export class BoardsService {
     const result = await this.boardRepository.find({
       where: {
         category: {
-          name: category,
+          name: In(category),
         },
       },
       relations: ['category', 'artist', 'boardAddress', 'boardImages'],
     });
+    console.log(category);
 
     if (result.length === 0) {
       throw new UnprocessableEntityException('조회된 내역이없습니다.');
