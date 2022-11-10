@@ -1,3 +1,4 @@
+import { MemberImage } from './../../memberImage/entity/memberImage.entity';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { ObjectType, Field } from '@nestjs/graphql';
 import {
@@ -6,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,4 +37,8 @@ export class Member {
   @ManyToOne(() => Artist)
   @Field(() => Artist)
   artist: Artist;
+
+  @OneToOne(() => MemberImage)
+  @Field(() => MemberImage)
+  image: MemberImage;
 }

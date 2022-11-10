@@ -1,3 +1,4 @@
+import { UserImage } from './../../userImage/entity/userImage.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
@@ -43,7 +44,7 @@ export class User {
   @Field(() => UserAuthority)
   authorities?: UserAuthority;
 
-  // @OneToOne(() => UserImage
-  // @Field(() => UserImage)
-  // image: UserImage;
+  @OneToOne(() => UserImage)
+  @Field(() => UserImage)
+  image: UserImage;
 }
