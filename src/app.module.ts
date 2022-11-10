@@ -1,3 +1,4 @@
+import { UserImageModule } from './apis/userImage/userImage.module';
 import { ArtistImageModule } from './apis/artistImage/artistImage.module';
 import { FilesModule } from './apis/files/files.modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -22,6 +23,7 @@ import { CommentModule } from './apis/comments/comment.module';
     LikeArtistModule,
     BoardsModule,
     UsersModule,
+    UserImageModule,
     FilesModule,
     ArtistsModule,
     ArtistImageModule,
