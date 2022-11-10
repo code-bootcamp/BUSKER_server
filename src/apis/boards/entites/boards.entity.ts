@@ -65,7 +65,9 @@ export class Boards {
   boardAddress: BoardAddress;
 
   @JoinColumn()
-  @OneToMany(() => BoardImages, (boardImages) => boardImages.boards)
+  @OneToMany(() => BoardImages, (boardImages) => boardImages.boards, {
+    nullable: true,
+  })
   @Field(() => [BoardImages])
   boardImages: BoardImages[];
 
