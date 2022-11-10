@@ -37,6 +37,8 @@ import { MapModule } from './apis/map/map.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         origin: 'https://busker.shop',
+        exposedHeaders: '*',
+        optionsSuccessStatus: 200,
         credentials: true,
       },
     }),
