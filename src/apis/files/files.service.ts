@@ -9,10 +9,10 @@ export class FilesService {
     const waitedFiles = await Promise.all(files);
 
     // storage 셋팅
-    const bucket = process.env.ELASTICSEARCH_BUCKET;
+    const bucket = process.env.GCP_BUSKER_BUCKET;
     const storage = new Storage({
-      projectId: process.env.ELASTICSEARCH_PROJECT_ID,
-      keyFilename: process.env.ELASTICSEARCH_KEY_FILE_NAME,
+      projectId: process.env.GCP_BUSKER_PROJECT_ID,
+      keyFilename: process.env.GCP_BUSKER_KEY_FILE_NAME,
     }).bucket(bucket);
 
     // 스토리지에 파일 올리기
@@ -37,10 +37,10 @@ export class FilesService {
   uploadFile({ file }) {
     // storage 셋팅
     const uuid = uuid4();
-    const bucket = process.env.ELASTICSEARCH_BUCKET;
+    const bucket = process.env.GCP_BUSKER_BUCKET;
     const storage = new Storage({
-      projectId: process.env.ELASTICSEARCH_PROJECT_ID,
-      keyFilename: process.env.ELASTICSEARCH_KEY_FILE_NAME,
+      projectId: process.env.GCP_BUSKER_PROJECT_ID,
+      keyFilename: process.env.GCP_BUSKER_KEY_FILE_NAME,
     }).bucket(bucket);
 
     // 스토리지에 파일 올리기
