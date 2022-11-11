@@ -18,6 +18,7 @@ import { LikeArtistModule } from './apis/likeArtist/likeArtist.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentModule } from './apis/comments/comment.module';
 import { MapModule } from './apis/map/map.module';
+import { AppController } from './app.controller';
 import { BoardImagesModule } from './apis/boardImages/boardImages.module';
 import { MemberImageModule } from './apis/memberImage/memberImage.module';
 
@@ -77,5 +78,6 @@ import { MemberImageModule } from './apis/memberImage/memberImage.module';
     }),
   ],
   providers: [],
+  controllers: [AppController],
 })
 export class AppModule {}
