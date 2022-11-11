@@ -7,6 +7,7 @@ import { RoleType } from 'src/commons/role/type/role-type';
 
 import { BoardsService } from './boards.service';
 import { CreateBoardInput } from './dto/createBoard.input';
+import { SearchBoardInput } from './dto/searchBoard.inpust';
 import { UpdateBoardInput } from './dto/updateBoard.input';
 import { Boards } from './entites/boards.entity';
 
@@ -15,8 +16,14 @@ export class BoardsResolver {
   constructor(private readonly boardsService: BoardsService) {}
 
   @Query(() => [Boards])
-  async fetchBoards() {
-    const result = await this.boardsService.findAll();
+  async fetchBoards(
+    @Args({ name: 'searchBoardInput', nullable: true })
+    searchBoardInput: SearchBoardInput,
+  ) {
+    const result = await this.boardsService.findAll({
+      searchBoardInput,
+    });
+
     return result;
   }
 

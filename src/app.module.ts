@@ -1,3 +1,4 @@
+import { MembersModule } from './apis/members/members.module';
 import { UserImageModule } from './apis/userImage/userImage.module';
 import { ArtistImageModule } from './apis/artistImage/artistImage.module';
 import { FilesModule } from './apis/files/files.modules';
@@ -18,17 +19,22 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentModule } from './apis/comments/comment.module';
 import { MapModule } from './apis/map/map.module';
 import { AppController } from './app.controller';
+import { BoardImagesModule } from './apis/boardImages/boardImages.module';
+import { MemberImageModule } from './apis/memberImage/memberImage.module';
 
 @Module({
   imports: [
     CommentModule,
     LikeArtistModule,
     BoardsModule,
+    BoardImagesModule,
     UsersModule,
     UserImageModule,
     FilesModule,
     ArtistsModule,
     ArtistImageModule,
+    MembersModule,
+    MemberImageModule,
     AuthModule,
     MapModule,
     ConfigModule.forRoot(),
