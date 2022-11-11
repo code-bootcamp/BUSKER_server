@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -28,17 +29,12 @@ export class Member {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
-
   @ManyToOne(() => Artist)
   @Field(() => Artist)
   artist: Artist;
 
-  @OneToOne(() => MemberImage)
+  @JoinColumn()
+  @OneToOne(() => MemberImage, (memberImage) => memberImage.member)
   @Field(() => MemberImage)
-  image: MemberImage;
+  memberImage: MemberImage;
 }

@@ -1,3 +1,4 @@
+import { MembersModule } from './apis/members/members.module';
 import { UserImageModule } from './apis/userImage/userImage.module';
 import { ArtistImageModule } from './apis/artistImage/artistImage.module';
 import { FilesModule } from './apis/files/files.modules';
@@ -30,6 +31,7 @@ import { BoardImagesModule } from './apis/boardImages/boardImages.module';
     FilesModule,
     ArtistsModule,
     ArtistImageModule,
+    MembersModule,
     AuthModule,
     MapModule,
     ConfigModule.forRoot(),
