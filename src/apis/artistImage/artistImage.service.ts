@@ -47,11 +47,11 @@ export class ArtistImageService {
     const { artistId, ...artistImage } = updateArtistImageInput;
 
     // 기존 Artist Image 가져오기
-    const artistImageDate = await this.artistImageRepository.findOne({
+    const artistImageData = await this.artistImageRepository.findOne({
       where: { artist: { id: artistId } },
     });
 
-    if (artistImageDate) {
+    if (artistImageData) {
       // 기존 이미지 삭제하기
       this.artistImageRepository.softDelete({
         artist: { id: artistId },
