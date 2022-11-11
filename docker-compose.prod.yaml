@@ -2,6 +2,8 @@ version: '3.7'
 
 services:
   my-backend:
+    image: asia.gcr.io/busker-368211/my-backend:2.1
+    platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,13 +11,5 @@ services:
     #   - ./src:/myfolder/src
     ports:
       - 3000:3000
-    env_file:
-      - ./.env.prod
-
-  my-database:
-    image: mysql:latest
-    environment:
-      MYSQL_DATABASE: 'main-project-docker'
-      MYSQL_ROOT_PASSWORD: 'root'
-    ports:
-      - 3306:3306
+    # env_file:
+    #   - ./.env.prod

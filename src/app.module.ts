@@ -17,6 +17,7 @@ import { LikeArtistModule } from './apis/likeArtist/likeArtist.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentModule } from './apis/comments/comment.module';
 import { MapModule } from './apis/map/map.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -71,5 +72,6 @@ import { MapModule } from './apis/map/map.module';
     }),
   ],
   providers: [],
+  controllers: [AppController],
 })
 export class AppModule {}
