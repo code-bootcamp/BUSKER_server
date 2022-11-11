@@ -19,6 +19,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentModule } from './apis/comments/comment.module';
 import { MapModule } from './apis/map/map.module';
 import { BoardImagesModule } from './apis/boardImages/boardImages.module';
+import { MemberImageModule } from './apis/memberImage/memberImage.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { BoardImagesModule } from './apis/boardImages/boardImages.module';
     ArtistsModule,
     ArtistImageModule,
     MembersModule,
+    MemberImageModule,
     AuthModule,
     MapModule,
     ConfigModule.forRoot(),
