@@ -42,10 +42,8 @@ import { MemberImageModule } from './apis/memberImage/memberImage.module';
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: 'https://busker.shop',
-        exposedHeaders: '*',
-        optionsSuccessStatus: 200,
-        credentials: true,
+        origin: '*',
+        credentials: false,
       },
     }),
     MailerModule.forRoot({
