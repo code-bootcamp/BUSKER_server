@@ -6,10 +6,8 @@ import { graphqlUploadExpress } from 'graphql-upload';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.enableCors({
-    origin: 'https://busker.shop',
-    exposedHeaders: '*',
-    optionsSuccessStatus: 200,
-    credentials: true,
+    origin: '*',
+    credentials: false,
   });
   app.useGlobalPipes(new ValidationPipe());
   app.use(graphqlUploadExpress());
