@@ -1,4 +1,8 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { In, Repository } from 'typeorm';
@@ -98,6 +102,24 @@ export class BoardsService {
         relations: ['category', 'artist', 'boardAddress', 'boardImages'],
       });
 
+      const now = new Date();
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].start_time < now && value[i].end_time > now) {
+          console.log(value[i]);
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: true,
+          });
+        } else {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: false,
+          });
+        }
+      }
+
       return this.paging({ value, page });
     }
 
@@ -111,6 +133,22 @@ export class BoardsService {
         relations: ['category', 'artist', 'boardAddress', 'boardImages'],
       });
 
+      const now = new Date();
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].start_time < now && value[i].end_time > now) {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: true,
+          });
+        } else {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: false,
+          });
+        }
+      }
       return this.paging({ value, page });
     }
 
@@ -123,6 +161,23 @@ export class BoardsService {
         },
         relations: ['category', 'artist', 'boardAddress', 'boardImages'],
       });
+
+      const now = new Date();
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].start_time < now && value[i].end_time > now) {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: true,
+          });
+        } else {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: false,
+          });
+        }
+      }
 
       return this.paging({ value, page });
     }
