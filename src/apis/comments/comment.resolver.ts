@@ -18,7 +18,7 @@ export class CommentsResolver {
     return await this.commentService.create({ context, createCommentInput });
   }
 
-  @Query(() => Comments)
+  @Query(() => [Comments])
   fetchComment(@Args('boardId') boardId: string) {
     return this.commentService.findOne({ boardId });
   }

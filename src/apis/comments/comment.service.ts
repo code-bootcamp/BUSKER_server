@@ -18,7 +18,9 @@ export class CommentsService {
 
   async create({ context, createCommentInput }) {
     const board = await this.boardsRepository.findOne({
-      where: { id: createCommentInput.userId },
+      where: {
+        id: createCommentInput.boardId,
+      },
     });
     const result = await this.commentRepository.save({
       ...createCommentInput,
@@ -30,12 +32,16 @@ export class CommentsService {
   }
 
   async findOne({ boardId }) {
-    return await this.commentRepository.findOne({
+    const result = await this.commentRepository.find({
       where: {
-        board: boardId,
+        board: {
+          id: boardId,
+        },
       },
       relations: ['user', 'board'],
     });
+
+    return result;
   }
 
   async delete({ context, commentId }) {
