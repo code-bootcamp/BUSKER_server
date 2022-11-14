@@ -21,9 +21,11 @@ import { MapModule } from './apis/map/map.module';
 import { AppController } from './app.controller';
 import { BoardImagesModule } from './apis/boardImages/boardImages.module';
 import { MemberImageModule } from './apis/memberImage/memberImage.module';
+import { DistrictModule } from './apis/district/district.module';
 
 @Module({
   imports: [
+    DistrictModule,
     CommentModule,
     LikeArtistModule,
     BoardsModule,

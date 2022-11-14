@@ -9,7 +9,7 @@ yarn.lock
 docker-compose.yaml
 Dockerfile
 .dockerignore
-/elastic-busker.json
+/gcp-busker.json
 
 
 ### Eclipse ###

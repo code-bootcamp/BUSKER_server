@@ -113,6 +113,18 @@ export class UsersResolver {
     });
   }
 
+  @Mutation(() => Boolean)
+  async nonLoginResetPassword(
+    @Args('email') email: string,
+    @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput,
+  ) {
+    const user = await this.usersService.findOneByEmail({ email });
+    return await this.usersService.updatePassword({
+      userId: user.id,
+      ...updatePasswordInput,
+    });
+  }
+
   @Mutation(() => String)
   async nonLoginSendVerificationEmail(@Args('email') email: string) {
     const isExist = await this.usersService.findOneByEmail({ email });
