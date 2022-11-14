@@ -3,7 +3,7 @@ import { UserImageModule } from './apis/userImage/userImage.module';
 import { ArtistImageModule } from './apis/artistImage/artistImage.module';
 import { FilesModule } from './apis/files/files.modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule, flatten, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -43,10 +43,17 @@ import { MemberImageModule } from './apis/memberImage/memberImage.module';
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: 'https://busker.shop',
-        exposedHeaders: '*',
-        optionsSuccessStatus: 200,
+        origin: ['https://busker.shop', 'http://localhost:3000'],
         credentials: true,
+        // exposedHeaders: ['Set-Cookie', 'Cookie'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        allowedHeaders: [
+          'Access-Control-Allow-Headers',
+          'Authorization',
+          'X-Requested-With',
+          'Content-Type',
+          'Accept',
+        ],
       },
     }),
     MailerModule.forRoot({

@@ -26,16 +26,34 @@ export class AuthService {
     private readonly userAuthorityRepository: Repository<UserAuthority>,
   ) {}
 
-  setRefreshToken({ user, res }) {
+  setRefreshToken({ user, res, req }) {
     const refreshToken = this.jwtService.sign(
       { email: user.email, sub: user.id },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    const result = res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/;`,
+    const originList = [
+      'http://localhost:3000', //
+      'https://busker.shop',
+    ];
+    const origin = req.headers.origin;
+    if (originList.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, HEAD, POST, OPTIONS, PUT',
+    ); //method 지정
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
-    return result;
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.busker.shop; SameSite=None; Secure; httpOnly;`,
+    );
+    return refreshToken;
   }
 
   async getAccessToken({ user }) {
@@ -48,7 +66,7 @@ export class AuthService {
         sub: user.id,
         role: role.authority,
       },
-      { secret: process.env.ACCESS_SECRET, expiresIn: '10m' },
+      { secret: process.env.ACCESS_SECRET, expiresIn: '1h' },
     );
   }
 
@@ -73,7 +91,7 @@ export class AuthService {
         );
       }
     } else {
-      this.setRefreshToken({ user, res: context.res });
+      this.setRefreshToken({ user, res: context.res, req: context.req });
       //
       return this.getAccessToken({ user });
     }
@@ -136,7 +154,7 @@ export class AuthService {
     }
 
     // 3. 회원가입이 되어있다면? 로그인(refreshToken, accessToken 만들어서 프론트엔드에 주기)
-    this.setRefreshToken({ user, res });
+    this.setRefreshToken({ user, res, req });
     res.redirect('http://localhost:5500/login/index.html');
   }
 }
