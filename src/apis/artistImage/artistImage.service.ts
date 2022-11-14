@@ -27,10 +27,10 @@ export class ArtistImageService {
   }: {
     createArtistImageInput: CreateArtistImageInput;
   }) {
-    const { artistId, ...artistImage } = createArtistImageInput;
+    const { userId, ...artistImage } = createArtistImageInput;
     const result: ArtistImage = await this.artistImageRepository.save({
       ...artistImage,
-      artist: { id: artistId },
+      artist: { id: userId },
       relations: ['artist'],
     });
     return result;
@@ -44,22 +44,22 @@ export class ArtistImageService {
   }: {
     updateArtistImageInput: UpdateArtistImageInput;
   }) {
-    const { artistId, ...artistImage } = updateArtistImageInput;
+    const { userId, ...artistImage } = updateArtistImageInput;
 
     // 기존 Artist Image 가져오기
     const artistImageData = await this.artistImageRepository.findOne({
-      where: { artist: { id: artistId } },
+      where: { artist: { id: userId } },
     });
 
     if (artistImageData) {
       // 기존 이미지 삭제하기
       this.artistImageRepository.softDelete({
-        artist: { id: artistId },
+        artist: { id: userId },
       });
       // 새로운 이미지 저장하기
       const result: ArtistImage = await this.artistImageRepository.save({
         ...artistImage,
-        artist: { id: artistId },
+        artist: { id: userId },
         relations: ['artist'],
       });
       return result;
