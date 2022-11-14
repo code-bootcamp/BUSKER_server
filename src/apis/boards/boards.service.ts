@@ -1,9 +1,6 @@
-import {
-  ConsoleLogger,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as moment from 'moment-timezone';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { In, Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
@@ -87,8 +84,32 @@ export class BoardsService {
   }
 
   async findAll({ searchBoardInput }) {
-    const { page, category, district } = searchBoardInput;
+    if (!searchBoardInput) {
+      const value = await this.boardRepository.find({
+        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      });
 
+      const now = new Date();
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].start_time < now && value[i].end_time > now) {
+          console.log(value[i]);
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: true,
+          });
+        } else {
+          await this.boardRepository.save({
+            ...value[i],
+            id: value[i].id,
+            isShowTime: false,
+          });
+        }
+      }
+      const page = 1;
+      return this.paging({ value, page });
+    }
+    const { page, category, district } = searchBoardInput;
     if (category && district) {
       const value = await this.boardRepository.find({
         where: {
