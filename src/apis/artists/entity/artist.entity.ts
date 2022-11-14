@@ -47,6 +47,6 @@ export class Artist {
   category?: Category;
 
   @OneToMany(() => Member, (member) => member.artist)
-  @Field(() => Member)
-  member: Member;
+  @Field(() => Member, { nullable: true })
+  member?: Member;
 }
