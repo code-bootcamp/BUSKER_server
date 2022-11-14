@@ -1,3 +1,4 @@
+import { Member } from 'src/apis/members/entity/member.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
@@ -44,4 +45,8 @@ export class Artist {
   @JoinColumn()
   @Field(() => Category, { nullable: true })
   category?: Category;
+
+  @OneToMany(() => Member, (member) => member.artist)
+  @Field(() => Member, { nullable: true })
+  member?: Member;
 }
