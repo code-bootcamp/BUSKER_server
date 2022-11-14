@@ -31,13 +31,10 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    const originList = [
-      'http://localhost:3000', //
-      'https://busker.shop',
-    ];
+    const originList = ['http://localhost:3000', 'https://busker.shop'];
     const origin = req.headers.origin;
     if (originList.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Origin', origin); //프론트와 연결
     }
 
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -51,7 +48,7 @@ export class AuthService {
     );
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.busker.shop; SameSite=None; Secure; httpOnly;`,
+      `refreshToken=${refreshToken}; path=/; domain=.chansweb.shop; SameSite=None; Secure; httpOnly;};`,
     );
     return refreshToken;
   }

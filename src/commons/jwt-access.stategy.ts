@@ -17,7 +17,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
 
   async validate(req, payload: any) {
     // 검증된 accessToken 가져오기
-    const accessToken = req.headers.authorization.split(' ')[1];
+    const accessToken = req.headers['authorization'].replace('bearer ', '');
     const isExpire = await this.cacheManager.get(`accessToken:${accessToken}`);
     if (isExpire) {
       throw new UnauthorizedException('Access Token Expired');

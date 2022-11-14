@@ -45,9 +45,9 @@ import { DistrictModule } from './apis/district/district.module';
       autoSchemaFile: './common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: ['https://busker.shop', 'http://localhost:3000'],
+        origin: ['http://localhost:3000', 'https://busker.shop'],
         credentials: true,
-        // exposedHeaders: ['Set-Cookie', 'Cookie'],
+        exposedHeaders: ['Set-Cookie', 'Cookie'],
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         allowedHeaders: [
           'Access-Control-Allow-Headers',
