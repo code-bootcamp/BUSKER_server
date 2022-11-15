@@ -13,6 +13,6 @@ export class DistrictResolver {
 
   @Mutation(() => String)
   async createDistrictList() {
-    return this.districtService.create();
+    return await this.districtService.create();
   }
 }
