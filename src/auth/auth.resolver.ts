@@ -26,8 +26,8 @@ export class AuthResolver {
       context,
     });
   }
-
-  @Mutation(() => String)
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => Boolean)
   async logout(
     @Context() context: IContext, //
   ) {

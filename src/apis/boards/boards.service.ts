@@ -1,6 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as moment from 'moment-timezone';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { In, Repository } from 'typeorm';
 import { Artist } from '../artists/entity/artist.entity';
