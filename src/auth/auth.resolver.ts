@@ -31,7 +31,11 @@ export class AuthResolver {
   async logout(
     @Context() context: IContext, //
   ) {
-    return this.authService.buskerLogout({ context });
+    return this.authService.buskerLogout({
+      context,
+      res: context.res,
+      req: context.req,
+    });
   }
 
   @UseGuards(GqlAuthRefreshGuard)
