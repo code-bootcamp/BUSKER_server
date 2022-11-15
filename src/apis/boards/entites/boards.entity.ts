@@ -70,5 +70,5 @@ export class Boards {
   @JoinColumn()
   @OneToMany(() => Comments, (comments) => comments.board)
   @Field(() => [Comments])
-  comments: Comments;
+  comments: Comments[];
 }
