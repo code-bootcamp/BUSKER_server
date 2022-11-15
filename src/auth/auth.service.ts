@@ -53,7 +53,7 @@ export class AuthService {
     );
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.chansweb.shop; SameSite=None; Secure; httpOnly;};`,
+      `refreshToken=${refreshToken}; path=/; domain=.chansweb.shop; SameSite=None; Secure; httpOnly;`,
     );
     return refreshToken;
   }
@@ -107,7 +107,7 @@ export class AuthService {
     }
   }
 
-  async buskerLogout({ context }) {
+  async buskerLogout({ context, res, req }) {
     try {
       const accessToken = await context.req.headers['authorization'].replace(
         'bearer ',
@@ -118,26 +118,11 @@ export class AuthService {
         '',
       );
 
-      const accessVerification = jwt.verify(accessToken, 'myAccessKey');
-      const refreshVerification = jwt.verify(refreshToken, 'myRefreshKey');
-      console.log('refreshToken OK');
-      console.log(jwt.verify(refreshToken, 'myRefreshKey'));
-
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-      const currentTime = new Date();
-      const currentSec = Math.abs(currentTime.getTime() / 1000);
-
-      const ttl_access = Math.ceil(accessVerification['exp'] - currentSec);
-      const ttl_refresh = Math.ceil(refreshVerification['exp'] - currentSec);
-
-      console.log('===============================');
-      console.log(ttl_access, ttl_refresh);
-
       const saveAccess = await this.cacheManager.set(
         `accessToken:${accessToken}`,
         'accessToken',
         {
-          ttl: ttl_access,
+          ttl: 0,
         },
       );
 
@@ -145,10 +130,29 @@ export class AuthService {
         `refreshToken:${refreshToken}`,
         'refreshToken',
         {
-          ttl: ttl_refresh,
+          ttl: 0,
         },
       );
+      // 쿠키 지움
+      const originList = ['http://localhost:3000', 'https://busker.shop'];
+      const origin = req.headers.origin;
+      if (originList.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin); //프론트와 연결
+      }
 
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, HEAD, POST, OPTIONS, PUT',
+      );
+      res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers',
+      );
+      res.setHeader(
+        'Set-Cookie',
+        `refreshToken=deleted; path=/; domain=.chansweb.shop; SameSite=None; Secure; httpOnly;`,
+      );
       if (saveAccess === 'OK' && saveRefresh === 'OK') {
         return true;
       } else {
