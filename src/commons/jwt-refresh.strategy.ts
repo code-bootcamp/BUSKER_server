@@ -27,7 +27,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     const refresh = req.headers['cookie'].replace('refreshToken=', '');
     const cache = await this.cacheManager.get(`refreshToken:${refresh}`);
 
-    if (cache) {
+    if (cache !== null) {
       throw new UnauthorizedException('로그아웃된 계정입니다.');
     }
     return {

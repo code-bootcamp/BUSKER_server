@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Repository } from 'typeorm';
 import { RoleType } from 'src/commons/role/type/role-type';
+import { User } from 'src/apis/users/entity/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,8 @@ export class AuthService {
     private readonly cacheManager: Cache,
     @InjectRepository(UserAuthority)
     private readonly userAuthorityRepository: Repository<UserAuthority>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   setRefreshToken({ user, res, req }) {
@@ -88,29 +91,32 @@ export class AuthService {
         );
       }
     } else {
-      this.setRefreshToken({ user, res: context.res, req: context.req });
+      this.setRefreshToken({
+        user,
+        res: context.res,
+        req: context.req,
+      });
       //
       return this.getAccessToken({ user });
     }
   }
 
   async buskerLogout({ context }) {
+    const accessToken = await context.req.headers['authorization'].replace(
+      'bearer ',
+      '',
+    );
+    const refreshToken = await context.req.headers['cookie'].replace(
+      'refreshToken=',
+      '',
+    );
     try {
-      const accessToken = await context.req.headers['authorization'].replace(
-        'bearer ',
-        '',
-      );
-      const refreshToken = await context.req.headers['cookie'].replace(
-        'refreshToken=',
-        '',
-      );
       const accessVerification = jwt.verify(accessToken, 'myAccessKey');
-      console.log('accessToken OK');
-      console.log(jwt.verify(accessToken, 'myAccessKey'));
       const refreshVerification = jwt.verify(refreshToken, 'myRefreshKey');
       console.log('refreshToken OK');
       console.log(jwt.verify(refreshToken, 'myRefreshKey'));
 
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
       const currentTime = new Date();
       const currentSec = Math.abs(currentTime.getTime() / 1000);
 
@@ -152,6 +158,6 @@ export class AuthService {
 
     // 3. 회원가입이 되어있다면? 로그인(refreshToken, accessToken 만들어서 프론트엔드에 주기)
     this.setRefreshToken({ user, res, req });
-    res.redirect('http://localhost:5500/login/index.html');
+    res.redirect('http://localhost:3000');
   }
 }
