@@ -39,10 +39,6 @@ export class Boards {
   @Field(() => Date)
   end_time: Date;
 
-  @Column()
-  @Field(() => Date, { nullable: false })
-  day: Date;
-
   @Column({ default: false })
   @Field(() => Boolean)
   isShowTime: boolean;
