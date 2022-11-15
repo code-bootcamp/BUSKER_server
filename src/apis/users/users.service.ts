@@ -97,7 +97,7 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await this.usersRepository.update(
       { id: userId },
-      { password: hashedPassword },
+      { password: hashedPassword, wrong_pass: 0 },
     );
     return result.affected ? true : false;
   }
