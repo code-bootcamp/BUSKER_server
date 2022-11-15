@@ -1,5 +1,6 @@
 import {
   CACHE_MANAGER,
+  ConflictException,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -15,6 +16,7 @@ import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Repository } from 'typeorm';
 import { RoleType } from 'src/commons/role/type/role-type';
 import { User } from 'src/apis/users/entity/user.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -91,6 +93,10 @@ export class AuthService {
         );
       }
     } else {
+      await this.userService.updatePassword({
+        userId: user.id,
+        password,
+      });
       this.setRefreshToken({
         user,
         res: context.res,
@@ -102,15 +108,16 @@ export class AuthService {
   }
 
   async buskerLogout({ context }) {
-    const accessToken = await context.req.headers['authorization'].replace(
-      'bearer ',
-      '',
-    );
-    const refreshToken = await context.req.headers['cookie'].replace(
-      'refreshToken=',
-      '',
-    );
     try {
+      const accessToken = await context.req.headers['authorization'].replace(
+        'bearer ',
+        '',
+      );
+      const refreshToken = await context.req.headers['cookie'].replace(
+        'refreshToken=',
+        '',
+      );
+
       const accessVerification = jwt.verify(accessToken, 'myAccessKey');
       const refreshVerification = jwt.verify(refreshToken, 'myRefreshKey');
       console.log('refreshToken OK');
@@ -126,11 +133,15 @@ export class AuthService {
       console.log('===============================');
       console.log(ttl_access, ttl_refresh);
 
-      await this.cacheManager.set(`accessToken:${accessToken}`, 'accessToken', {
-        ttl: ttl_access,
-      });
+      const saveAccess = await this.cacheManager.set(
+        `accessToken:${accessToken}`,
+        'accessToken',
+        {
+          ttl: ttl_access,
+        },
+      );
 
-      await this.cacheManager.set(
+      const saveRefresh = await this.cacheManager.set(
         `refreshToken:${refreshToken}`,
         'refreshToken',
         {
@@ -138,9 +149,13 @@ export class AuthService {
         },
       );
 
-      return '로그아웃에 성공했습니다.';
+      if (saveAccess === 'OK' && saveRefresh === 'OK') {
+        return true;
+      } else {
+        throw new UnauthorizedException('로그아웃을 실패했습니다.');
+      }
     } catch (e) {
-      throw new UnauthorizedException('로그아웃을 실패했습니다.');
+      throw new ConflictException('해당 사용자의 토큰이 올바르지 않습니다.');
     }
   }
 
