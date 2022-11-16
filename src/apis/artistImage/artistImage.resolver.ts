@@ -1,8 +1,7 @@
-import { UpdateArtistImageInput } from './dto/updateArtistImageInput';
-import { CreateArtistImageInput } from './dto/createArtistImageInput';
+import { IContext } from 'src/commons/context';
 import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { ArtistImageService } from './artistImage.service';
-import { Mutation, Resolver, Args } from '@nestjs/graphql';
+import { Mutation, Resolver, Args, Context } from '@nestjs/graphql';
 
 @Resolver()
 export class ArtistImageResolver {
@@ -16,10 +15,11 @@ export class ArtistImageResolver {
   // @return 아티스트에 등록한 이미지의 정보
   @Mutation(() => ArtistImage)
   async createArtistImage(
-    @Args('createArtistImageInput')
-    createArtistImageInput: CreateArtistImageInput,
+    // @Args('userId') userId: string, //
+    @Args({ name: 'url', type: () => String }) url: string,
+    @Args({ name: 'artistId', type: () => String }) artistId: string,
   ) {
-    return this.artistImageService.create({ createArtistImageInput });
+    return await this.artistImageService.create({ url, artistId });
   }
 
   // Update Artist Image API
@@ -28,10 +28,11 @@ export class ArtistImageResolver {
   // @return 수정한 아티스트 이미지의 정보
   @Mutation(() => ArtistImage)
   async updateArtistImage(
-    @Args('updateArtistImageInput')
-    updateArtistImageInput: UpdateArtistImageInput,
+    @Context() context: IContext,
+    @Args('artistId') artistId: string, //
+    @Args({ name: 'url', type: () => String }) url: string, //UpdateArtistImageInput,
   ) {
-    return await this.artistImageService.update({ updateArtistImageInput });
+    return await this.artistImageService.update({ artistId, url });
   }
 
   // Delete Artist Image API
