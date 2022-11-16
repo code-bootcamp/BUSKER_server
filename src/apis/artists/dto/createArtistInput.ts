@@ -14,6 +14,9 @@ export class CreateArtistInput {
   @Field(() => String)
   category: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    defaultValue: 'https://i.ibb.co/PYBhzR8/noprofile.jpg',
+  })
   artistImageURL: string;
 }
