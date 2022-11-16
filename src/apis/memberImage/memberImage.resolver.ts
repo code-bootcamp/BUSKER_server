@@ -12,10 +12,9 @@ export class MemberImageResolver {
 
   @Mutation(() => MemberImage)
   async createMemberImage(
-    @Args('createMemberImageInput')
-    createMemberImageInput: CreateMemberImageInput,
+    @Args({ name: 'url', type: () => String }) url: string,
   ) {
-    return this.memberImageService.create({ createMemberImageInput });
+    return this.memberImageService.create({ url });
   }
 
   @Mutation(() => MemberImage)

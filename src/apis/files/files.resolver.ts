@@ -24,4 +24,12 @@ export class FilesResolver {
   ) {
     return this.filesService.uploadFile({ file });
   }
+
+  // 유저이미지 업로드
+  // @Mutation(() => String)
+  // async userImageUpload(
+  //   @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload, //
+  // ) {
+  //   return await this.filesService.userImage({ file });
+  // }
 }

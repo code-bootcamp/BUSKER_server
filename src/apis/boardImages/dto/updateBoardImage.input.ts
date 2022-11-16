@@ -1,5 +1,10 @@
-import { InputType, PartialType } from '@nestjs/graphql';
-import { CreateBoardImageInput } from './createBoardImage.input';
+import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateBoardImageInput extends PartialType(CreateBoardImageInput) {}
+export class UpdateBoardImageInput {
+  @Field(() => String)
+  boardId: string;
+
+  @Field(() => [String])
+  url: string[];
+}

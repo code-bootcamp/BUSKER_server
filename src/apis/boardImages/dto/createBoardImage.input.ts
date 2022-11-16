@@ -5,6 +5,6 @@ export class CreateBoardImageInput {
   @Field(() => String)
   boardId: string;
 
-  @Field(() => [String])
-  url: string[];
+  @Field(() => String)
+  url: string;
 }
