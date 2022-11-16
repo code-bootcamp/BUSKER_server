@@ -11,7 +11,9 @@ import { ArtistsService } from './artists.service';
 import { Artist } from './entity/artist.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category, Artist, UserAuthority])],
+  imports: [
+    TypeOrmModule.forFeature([Category, Artist, UserAuthority, ArtistImage]),
+  ],
   providers: [
     ArtistsResolver,
     ArtistsService,
