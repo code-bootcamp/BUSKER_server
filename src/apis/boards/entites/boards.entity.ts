@@ -38,10 +38,6 @@ export class Boards {
   @Field(() => Date)
   end_time: Date;
 
-  @Column()
-  @Field(() => Date, { nullable: false })
-  day: Date;
-
   @Column({ default: false })
   @Field(() => Boolean)
   isShowTime: boolean;
@@ -76,5 +72,5 @@ export class Boards {
   @JoinColumn()
   @OneToMany(() => Comments, (comments) => comments.board)
   @Field(() => [Comments])
-  comments: Comments;
+  comments: Comments[];
 }

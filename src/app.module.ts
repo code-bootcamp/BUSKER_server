@@ -22,9 +22,11 @@ import { BoardImagesModule } from './apis/boardImages/boardImages.module';
 import { MemberImageModule } from './apis/memberImage/memberImage.module';
 import { DistrictModule } from './apis/district/district.module';
 import { CategoryModule } from './apis/categories/categories.module';
+import { CityModule } from './apis/city/city.module';
 
 @Module({
   imports: [
+    CityModule,
     CategoryModule,
     DistrictModule,
     CommentModule,
@@ -55,6 +57,8 @@ import { CategoryModule } from './apis/categories/categories.module';
     MailerModule.forRoot({
       transport: {
         service: process.env.MAIL_SERVICE,
+        host: process.env.MAIL_HOST,
+        port: 587,
         secure: false, // upgrade later with STARTTLS
         auth: {
           user: process.env.MAIL_USER,

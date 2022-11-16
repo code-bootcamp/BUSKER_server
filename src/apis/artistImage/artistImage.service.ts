@@ -48,6 +48,14 @@ export class ArtistImageService {
       });
       return aa;
     }
+    // if (artistImageData) {
+    // 기존 이미지 삭제하기
+    // this.artistImageRepository.softDelete({
+    //   artist: { id: artistId },
+    // });
+    // 새로운 이미지 저장하기
+
+    // }
   }
 
   // Delete Artist Image

@@ -1,6 +1,12 @@
+import { resolve } from 'path';
+import { FileUpload } from 'graphql-upload';
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Storage } from '@google-cloud/storage';
 import { v4 as uuid4 } from 'uuid';
+
+// interface IUpload {
+//   file: FileUpload;
+// }
 
 @Injectable()
 export class FilesService {
@@ -53,4 +59,30 @@ export class FilesService {
       throw new UnprocessableEntityException('실패');
     }
   }
+
+  // 유저 이미지 업로드
+  // async userImage({ file }: IUpload) {
+  //   // storage 셋팅
+  //   const bucket = process.env.GCP_BUSKER_BUCKET;
+  //   const storage = new Storage({
+  //     projectId: process.env.GCP_BUSKER_PROJECT_ID,
+  //     keyFilename: process.env.GCP_BUSKER_KEY_FILE_NAME,
+  //   }).bucket(bucket);
+
+  //   // 스토리지에 파일 올리기
+  //   const result = await new Promise((resolve, reject) => {
+  //     const fname = `userImage/${uuid4()}`;
+  //     const EncodeProjectFile = encodeURIComponent(file.filename);
+  //     file
+  //       .createReadStream()
+  //       .pipe(storage.file(`${fname}/${file.filename}`).createWriteStream())
+  //       .on('finish', () =>
+  //         resolve(
+  //           `https://storage.cloud.google.com/${bucket}/${fname}/${EncodeProjectFile}`,
+  //         ),
+  //       )
+  //       .on('error', (error) => reject(error));
+  //   });
+  //   return result;
+  // }
 }

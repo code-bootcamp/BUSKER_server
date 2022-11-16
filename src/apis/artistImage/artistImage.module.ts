@@ -10,5 +10,6 @@ import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([ArtistImage, Artist, UserAuthority])],
   providers: [ArtistImageResolver, ArtistImageService, ArtistsService],
+
 })
 export class ArtistImageModule {}
