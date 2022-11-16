@@ -3,7 +3,7 @@ import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateMemberInput } from './dto/updateMemberInput';
 import { CreateMemberInput } from './dto/createMemberInput';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { Member } from './entity/member.entity';
 import { MembersService } from './members.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,12 +11,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Resolver()
 export class MembersResolver {
   constructor(
-    @InjectRepository(Member)
     private readonly membersService: MembersService, //
-
-    @InjectRepository(Artist)
-    private readonly artistsService: ArtistsService,
   ) {}
+
+  @Query(() => [Member])
+  fetchMembers() {
+    return this.membersService.findAll();
+  }
 
   // 멤버 등록
   @Mutation(() => Member)
