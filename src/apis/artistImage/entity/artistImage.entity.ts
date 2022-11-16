@@ -16,8 +16,8 @@ export class ArtistImage {
   @Field(() => String)
   id: string;
 
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true, name: 'url' })
+  @Column()
+  @Field(() => String)
   url: string;
 
   @DeleteDateColumn()

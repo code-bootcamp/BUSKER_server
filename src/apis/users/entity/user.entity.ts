@@ -50,8 +50,6 @@ export class User {
   // @Field(() => UserImage, { nullable: true })
   // userImage: UserImage;
   @Column()
-  @Field(() => String, {
-    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
-  })
+  @Field(() => String)
   userImageURL: string;
 }
