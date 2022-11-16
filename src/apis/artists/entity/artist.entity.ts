@@ -41,9 +41,7 @@ export class Artist {
   // @Field(() => ArtistImage, { nullable: true })
   // artist_image?: ArtistImage;
   @Column()
-  @Field(() => String, {
-    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
-  })
+  @Field(() => String)
   artistImageURL: string;
 
   // @Column()

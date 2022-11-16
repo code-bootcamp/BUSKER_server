@@ -24,6 +24,9 @@ export class CreateUserInput {
   @Validate(PasswordValidation, [passwordRequirement])
   readonly password: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    defaultValue: 'https://i.ibb.co/PYBhzR8/noprofile.jpg',
+  })
   userImageURL: string;
 }
