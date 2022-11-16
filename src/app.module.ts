@@ -57,6 +57,8 @@ import { CityModule } from './apis/city/city.module';
     MailerModule.forRoot({
       transport: {
         service: process.env.MAIL_SERVICE,
+        host: process.env.MAIL_HOST,
+        port: 587,
         secure: false, // upgrade later with STARTTLS
         auth: {
           user: process.env.MAIL_USER,
