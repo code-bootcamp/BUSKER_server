@@ -9,6 +9,7 @@ export class ArtistImageService {
   constructor(
     @InjectRepository(ArtistImage)
     private readonly artistImageRepository: Repository<ArtistImage>,
+
     private readonly artistsService: ArtistsService,
   ) {}
 

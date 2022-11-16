@@ -41,10 +41,16 @@ export class Artist {
   @Field(() => ArtistImage, { nullable: true })
   artist_image?: ArtistImage;
 
-  @ManyToOne(() => Category, { nullable: true })
+  // @Column()
+  // @Field(() => String, {
+  //   defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
+  // })
+  // artistImageURL: string;
+
+  @ManyToOne(() => Category)
   @JoinColumn()
-  @Field(() => Category, { nullable: true })
-  category?: Category;
+  @Field(() => Category)
+  category: Category;
 
   @OneToMany(() => Member, (member) => member.artist)
   @Field(() => Member, { nullable: true })
