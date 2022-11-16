@@ -20,48 +20,67 @@ export class BoardImagesService {
     return result;
   }
 
-  async update({
-    updateBoardImageInput,
-  }: {
-    updateBoardImageInput: UpdateBoardImageInput;
-  }) {
-    const { boardId, ...imageList } = updateBoardImageInput;
-    const dbImageList = await this.boardImagesRepository.find({
-      where: { boards: { id: boardId } },
-    });
+  // async update({ boardId, urls }) {
+  //   const boards = await this.BoardsRepository.findOne({
+  //     where: { id: boardId },
+  //   });
+  //   if (!boards)
+  //     throw new UnprocessableEntityException('등록되지 않은 boardId 입니다.');
 
-    const dbImageList2 = dbImageList.map((el) => el.url);
+  //   const boardUrls = await this.boardImagesRepository.find({
+  //     where: { id: boardId },
+  //   });
 
-    await Promise.all(
-      dbImageList2.map((el) => {
-        if (!imageList.url.includes(el)) {
-          return this.boardImagesRepository.softDelete({
-            boards: { id: boardId },
-            url: el,
-          });
-        }
-        return;
-      }),
-    );
-    await Promise.all(
-      imageList.url.map(async (el) => {
-        const checker = await this.boardImagesRepository.find({
-          where: { boards: { id: boardId }, url: el },
-        });
-        if (!checker.length) {
-          return this.boardImagesRepository.save({
-            boards: { id: boardId },
-            url: el,
-          });
-        }
-        return;
-      }),
-    );
-    return await this.boardImagesRepository.find({
-      where: { boards: { id: boardId } },
-      relations: ['board'],
-    });
-  }
+  //   const newUrlsArray = [];
+  //   const pastUrls = [];
+
+  //   for (let i = 0; i < urls.length; i++) {
+  //     await Promise.all(
+  //       boardUrls.map(async (el) => {
+  //         if (el.url === urls[i]) {
+  //           newUrlsArray.push(el.url);
+  //         } else {
+  //           pastUrls.push(el.url);
+  //         }
+  //       }),
+  //     );
+  //   }
+
+  //   const newUrls = urls.filter((el) => {
+  //     return !newUrlsArray.includes(el);
+  //   });
+
+  //   const forDelete = [
+  //     ...new Set(
+  //       pastUrls.filter((el) => {
+  //         return !newUrlsArray.includes(el);
+  //       }),
+  //     ),
+  //   ];
+
+  //   await Promise.all(
+  //     newUrls.map(async (el) => {
+  //       return await this.boardImagesRepository.save({
+  //         boards,
+  //         url: el,
+  //       });
+  //     }),
+  //   );
+
+  //   await Promise.all(
+  //     forDelete.map(async (el) => {
+  //       return await this.boardImagesRepository.softDelete({
+  //         boards,
+  //         url: el,
+  //       });
+  //     }),
+  //   );
+  //   const saveResult = await this.boardImagesRepository.find({
+  //     where: { boards },
+  //     relations: ['boards'],
+  //   });
+  //   return saveResult;
+  // }
 
   async delete({ boardImagesId }: { boardImagesId: string }) {
     const result = await this.boardImagesRepository.softDelete({

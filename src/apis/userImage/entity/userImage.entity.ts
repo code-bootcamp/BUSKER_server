@@ -21,7 +21,7 @@ export class UserImage {
 
   // user 1:1로 연결
   @JoinColumn()
-  @OneToOne(() => User, (user) => user.userImage)
+  @OneToOne(() => User, (user) => user.userImageURL)
   @Field(() => User)
   user: User;
 }

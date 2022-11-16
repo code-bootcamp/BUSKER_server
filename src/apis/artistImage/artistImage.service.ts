@@ -2,21 +2,25 @@ import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ArtistsService } from '../artists/artists.service';
 
 @Injectable()
 export class ArtistImageService {
   constructor(
     @InjectRepository(ArtistImage)
     private readonly artistImageRepository: Repository<ArtistImage>,
+    private readonly artistsService: ArtistsService,
   ) {}
 
   // Create Artist Image
   // @Param createArtistImageInput 이미지를 등록할 아티스트의 ID와 url
   // @returns `ArtistImage`
-  async create({ url }) {
+  async create({ url, artistId }) {
+    const artist = await this.artistsService.findOne({ artistId });
     const aa = await this.artistImageRepository.save({
       // ...artistImage,
       url: url,
+      artist,
       // relations: ['artist'],
     });
     return aa;
@@ -28,10 +32,15 @@ export class ArtistImageService {
   async update({ artistId, url }) {
     // 기존 Artist Image 가져오기
     const artistImageData = await this.artistImageRepository.findOne({
-      where: { url: url },
+      where: { id: artistId },
     });
     console.log(artistImageData);
     if (artistImageData) {
+      // 기존 이미지 삭제
+      this.artistImageRepository.delete({
+        artist: { id: artistId },
+      });
+      // 새로운 이미지 저장
       const aa = await this.artistImageRepository.save({
         artistId: artistId,
         url: url,

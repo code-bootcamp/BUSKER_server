@@ -27,11 +27,12 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email: email } });
   }
 
-  async create({ email, password }) {
+  async create({ email, password, userImageURL }) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.usersRepository.save({
       email,
       password: hashedPassword,
+      userImageURL: userImageURL,
     });
     return user;
   }

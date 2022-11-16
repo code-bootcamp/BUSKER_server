@@ -4,13 +4,9 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -20,21 +16,22 @@ export class Member {
   @Field(() => String)
   id: string;
 
-  @Column(() => String)
+  @Column({ type: 'varchar', length: 30 })
   name: string;
 
-  @Column(() => String)
+  @Column({ type: 'varchar', length: 30 })
   role: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Artist)
-  @Field(() => Artist)
+  @ManyToOne(() => Artist, (artist) => artist.member)
+  @Field(() => Artist, { nullable: true })
   artist: Artist;
 
-  @JoinColumn()
-  @OneToOne(() => MemberImage, (memberImage) => memberImage.member)
-  @Field(() => MemberImage)
-  memberImage: MemberImage;
+  @Column()
+  @Field(() => String, {
+    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
+  })
+  memberImageURL: string;
 }

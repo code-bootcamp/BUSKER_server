@@ -7,4 +7,7 @@ export class CreateMemberInput {
 
   @Field(() => String)
   role: string;
+
+  @Field(() => String, { nullable: true })
+  memberImageURL: string;
 }

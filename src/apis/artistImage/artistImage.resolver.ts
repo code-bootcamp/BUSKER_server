@@ -17,8 +17,9 @@ export class ArtistImageResolver {
   async createArtistImage(
     // @Args('userId') userId: string, //
     @Args({ name: 'url', type: () => String }) url: string,
+    @Args({ name: 'artistId', type: () => String }) artistId: string,
   ) {
-    return await this.artistImageService.create({ url });
+    return await this.artistImageService.create({ url, artistId });
   }
 
   // Update Artist Image API
@@ -27,13 +28,9 @@ export class ArtistImageResolver {
   // @return 수정한 아티스트 이미지의 정보
   @Mutation(() => ArtistImage)
   async updateArtistImage(
-    @Context() context: IContext,
     @Args('artistId') artistId: string, //
     @Args({ name: 'url', type: () => String }) url: string, //UpdateArtistImageInput,
   ) {
-    console.log('!!!!!!!!!!!!!!!!');
-
-    console.log(context.req.user.artistImageId);
     return await this.artistImageService.update({ artistId, url });
   }
 

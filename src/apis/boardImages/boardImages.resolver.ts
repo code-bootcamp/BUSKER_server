@@ -18,13 +18,13 @@ export class BoardImagesResolver {
   ) {
     return await this.boardImagesService.create({ url });
   }
-
-  @Mutation(() => [BoardImages])
-  async updateBoardImages(
-    @Args('updateBoardImageInput') updateBoardImageInput: UpdateBoardImageInput,
-  ) {
-    return await this.boardImagesService.update({ updateBoardImageInput });
-  }
+  // @Mutation(() => [BoardImages])
+  // async updateBoardImages(
+  //   @Args('boardId') boardId: string, //
+  //   @Args({ name: 'urls', type: () => [String] }) urls: string[],
+  // ) {
+  //   return await this.boardImagesService.update({ boardId, urls });
+  // }
 
   @Mutation(() => Boolean)
   async deleteBoardImages(
