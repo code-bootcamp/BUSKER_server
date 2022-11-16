@@ -34,7 +34,7 @@ export class ArtistsService {
   async findOne({ artistId }) {
     return await this.artistRepository.findOne({
       where: { id: artistId },
-      relations: ['artist_image', 'category', 'member'],
+      relations: ['category', 'member'],
     });
   }
 
