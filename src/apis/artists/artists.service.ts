@@ -18,19 +18,12 @@ export class ArtistsService {
     return await this.artistRepository.findOne({ where: { active_name } });
   }
 
-  async create({
-    active_name,
-    description,
-    promotion_url,
-    category,
-    artistImageURL,
-  }) {
+  async create({ active_name, description, promotion_url, category }) {
     return await this.artistRepository.save({
       active_name,
       description,
       promotion_url,
       category,
-      artistImageURL,
     });
   }
 
