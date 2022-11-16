@@ -16,10 +16,10 @@ export class UserImageResolver {
   // @returns 유저에 등록된 이미지의 정보
   @Mutation(() => UserImage)
   async createUserImage(
-    @Args('createUserImageInput')
-    createUserImageInput: CreateUserImageInput,
+    @Args({ name: 'url', type: () => String }) url: string,
+    @Args({ name: 'userId', type: () => String }) userId: string,
   ) {
-    return this.userImageService.create({ createUserImageInput });
+    return this.userImageService.create({ url, userId });
   }
 
   // Update User Image API

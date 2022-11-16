@@ -28,7 +28,6 @@ export class ArtistImageResolver {
   // @return 수정한 아티스트 이미지의 정보
   @Mutation(() => ArtistImage)
   async updateArtistImage(
-    @Context() context: IContext,
     @Args('artistId') artistId: string, //
     @Args({ name: 'url', type: () => String }) url: string, //UpdateArtistImageInput,
   ) {

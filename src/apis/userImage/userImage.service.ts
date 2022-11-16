@@ -1,8 +1,8 @@
+import { UsersService } from 'src/apis/users/users.service';
 import { UserImage } from './entity/userImage.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserImageInput } from './dto/createUserImage.input';
 import { UpdateUserImageInput } from './dto/updateUserImage.input';
 
 @Injectable()
@@ -10,21 +10,17 @@ export class UserImageService {
   constructor(
     @InjectRepository(UserImage)
     private readonly userImageRepository: Repository<UserImage>,
+    private readonly usersService: UsersService,
   ) {}
 
   // Create User Image
   // @param createUserImageInput 이미지를 등록할 유저의 ID와 url
   // @returns `UserImage`
-  async create({
-    createUserImageInput,
-  }: {
-    createUserImageInput: CreateUserImageInput;
-  }) {
-    const { userId, ...userImage } = createUserImageInput;
-    const result: UserImage = await this.userImageRepository.save({
-      ...userImage,
-      user: { id: userId },
-      relations: ['user'],
+  async create({ url, userId }) {
+    const user = await this.usersService.findOne({ userId });
+    const result = await this.userImageRepository.save({
+      url: url,
+      user,
     });
     return result;
   }

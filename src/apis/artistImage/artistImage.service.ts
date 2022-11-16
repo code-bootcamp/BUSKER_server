@@ -32,10 +32,15 @@ export class ArtistImageService {
   async update({ artistId, url }) {
     // 기존 Artist Image 가져오기
     const artistImageData = await this.artistImageRepository.findOne({
-      where: { url: url },
+      where: { id: artistId },
     });
     console.log(artistImageData);
     if (artistImageData) {
+      // 기존 이미지 삭제
+      this.artistImageRepository.delete({
+        artist: { id: artistId },
+      });
+      // 새로운 이미지 저장
       const aa = await this.artistImageRepository.save({
         artistId: artistId,
         url: url,
@@ -43,14 +48,6 @@ export class ArtistImageService {
       });
       return aa;
     }
-    // if (artistImageData) {
-    // 기존 이미지 삭제하기
-    // this.artistImageRepository.softDelete({
-    //   artist: { id: artistId },
-    // });
-    // 새로운 이미지 저장하기
-
-    // }
   }
 
   // Delete Artist Image

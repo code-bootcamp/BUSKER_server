@@ -20,7 +20,7 @@ export class BoardImages {
 
   // Board 1:n
   @JoinColumn()
-  @ManyToOne(() => Boards, (boards) => boards.boardImages)
+  @ManyToOne(() => Boards, (boards) => boards.boardImageURL)
   @Field(() => Boards)
   boards: Boards;
 }
