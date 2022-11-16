@@ -23,4 +23,7 @@ export class CreateUserInput {
   @MaxLength(20)
   @Validate(PasswordValidation, [passwordRequirement])
   readonly password: string;
+
+  @Field(() => String, { nullable: true })
+  userImageURL: string;
 }

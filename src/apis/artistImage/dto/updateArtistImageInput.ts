@@ -1,7 +1,10 @@
-import { InputType, PartialType } from '@nestjs/graphql';
-import { CreateArtistImageInput } from './createArtistImageInput';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateArtistImageInput extends PartialType(
-  CreateArtistImageInput,
-) {}
+export class UpdateArtistImageInput {
+  @Field(() => String)
+  artistId: string;
+
+  @Field(() => String)
+  url: string;
+}

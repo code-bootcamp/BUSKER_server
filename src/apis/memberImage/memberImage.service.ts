@@ -13,16 +13,9 @@ export class MemberImageService {
     private readonly memberImageRepository: Repository<MemberImage>,
   ) {}
 
-  async create({
-    createMemberImageInput,
-  }: {
-    createMemberImageInput: CreateMemberImageInput;
-  }) {
-    const { memberId, ...memberImage } = createMemberImageInput;
-    const result: MemberImage = await this.memberImageRepository.save({
-      ...memberImage,
-      member: { id: memberId },
-      relations: ['member'],
+  async create({ url }) {
+    const result = await this.memberImageRepository.save({
+      url: url,
     });
     return result;
   }

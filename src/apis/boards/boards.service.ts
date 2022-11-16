@@ -54,6 +54,10 @@ export class BoardsService {
         id: category,
       },
     });
+    if (!boardCategory)
+      throw new UnprocessableEntityException(
+        '잘못된 카테고리 혹은 카테고리가 없습니다.',
+      );
 
     const start = new Date(createBoardInput.start_time);
     const end = new Date(createBoardInput.end_time);
@@ -91,7 +95,6 @@ export class BoardsService {
       const now = new Date();
       for (let i = 0; i < value.length; i++) {
         if (value[i].start_time < now && value[i].end_time > now) {
-          console.log(value[i]);
           await this.boardRepository.save({
             ...value[i],
             id: value[i].id,
@@ -125,7 +128,6 @@ export class BoardsService {
       const now = new Date();
       for (let i = 0; i < value.length; i++) {
         if (value[i].start_time < now && value[i].end_time > now) {
-          console.log(value[i]);
           await this.boardRepository.save({
             ...value[i],
             id: value[i].id,
@@ -231,46 +233,45 @@ export class BoardsService {
     return temp;
   }
 
-  async findCity({ city }) {
-    const result = await this.boardRepository.find({
-      where: {
-        boardAddress: {
-          address_city: city,
-        },
-      },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
-    });
-    return result;
-  }
+  // async findCity({ city }) {
+  //   const result = await this.boardRepository.find({
+  //     where: {
+  //       boardAddress: {
+  //         address_city: city,
+  //       },
+  //     },
+  //     relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+  //   });
+  //   return result;
+  // }
 
-  async findDistrict({ district }) {
-    const result = await this.boardRepository.find({
-      where: {
-        boardAddress: {
-          address_district: district,
-        },
-      },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
-    });
-    return result;
-  }
+  // async findDistrict({ district }) {
+  //   const result = await this.boardRepository.find({
+  //     where: {
+  //       boardAddress: {
+  //         address_district: district,
+  //       },
+  //     },
+  //     relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+  //   });
+  //   return result;
+  // }
 
-  async findCategory({ category }) {
-    const result = await this.boardRepository.find({
-      where: {
-        category: {
-          name: In(category),
-        },
-      },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
-    });
-    console.log(category);
+  // async findCategory({ category }) {
+  //   const result = await this.boardRepository.find({
+  //     where: {
+  //       category: {
+  //         name: In(category),
+  //       },
+  //     },
+  //     relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+  //   });
 
-    if (result.length === 0) {
-      throw new UnprocessableEntityException('조회된 내역이없습니다.');
-    }
-    return result;
-  }
+  //   if (result.length === 0) {
+  //     throw new UnprocessableEntityException('조회된 내역이없습니다.');
+  //   }
+  //   return result;
+  // }
 
   async findOne({ boardId }) {
     const result = await this.boardRepository.findOne({

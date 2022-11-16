@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
@@ -15,13 +16,16 @@ export class ArtistImage {
   @Field(() => String)
   id: string;
 
-  @Column()
-  @Field(() => String)
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true, name: 'url' })
   url: string;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   // artist 1:1
   @JoinColumn()
-  @OneToOne(() => Artist, (artist) => artist.artist_image)
+  @OneToOne(() => Artist, (artist) => artist.artistImageURL)
   @Field(() => Artist)
   artist: Artist;
 }

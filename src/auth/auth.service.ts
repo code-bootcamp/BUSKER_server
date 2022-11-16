@@ -172,6 +172,7 @@ export class AuthService {
       user = await this.userService.create({
         email: req.user.email,
         password: req.user.password,
+        userImageURL: req.user.userImageURL,
       });
     }
 

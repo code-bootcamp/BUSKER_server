@@ -36,15 +36,26 @@ export class Artist {
   @Field(() => [LikeArtist])
   pick_user: LikeArtist[];
 
-  @JoinColumn()
-  @OneToOne(() => ArtistImage, (artist_image) => artist_image.artist)
-  @Field(() => ArtistImage, { nullable: true })
-  artist_image?: ArtistImage;
+  // @JoinColumn()
+  // @OneToOne(() => ArtistImage, (artist_image) => artist_image.artist)
+  // @Field(() => ArtistImage, { nullable: true })
+  // artist_image?: ArtistImage;
+  @Column()
+  @Field(() => String, {
+    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
+  })
+  artistImageURL: string;
 
-  @ManyToOne(() => Category, { nullable: true })
+  // @Column()
+  // @Field(() => String, {
+  //   defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
+  // })
+  // artistImageURL: string;
+
+  @ManyToOne(() => Category)
   @JoinColumn()
-  @Field(() => Category, { nullable: true })
-  category?: Category;
+  @Field(() => Category)
+  category: Category;
 
   @OneToMany(() => Member, (member) => member.artist)
   @Field(() => Member, { nullable: true })

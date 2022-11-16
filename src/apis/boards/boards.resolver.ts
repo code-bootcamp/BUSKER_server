@@ -35,23 +35,23 @@ export class BoardsResolver {
     return await this.boardsService.findOne({ boardId });
   }
 
-  @Query(() => [Boards])
-  async fetchBoardByCategory(@Args('category') category: string) {
-    const result = await this.boardsService.findCategory({ category });
-    return result;
-  }
-  @Query(() => [Boards])
-  async fetchBoardByAddress_city(@Args('city') city: string) {
-    const result = await this.boardsService.findCity({ city });
-    return result;
-  }
+  // @Query(() => [Boards])
+  // async fetchBoardByCategory(@Args('category') category: string) {
+  //   const result = await this.boardsService.findCategory({ category });
+  //   return result;
+  // }
+  // @Query(() => [Boards])
+  // async fetchBoardByAddress_city(@Args('city') city: string) {
+  //   const result = await this.boardsService.findCity({ city });
+  //   return result;
+  // }
 
-  @Query(() => [Boards])
-  async fetchBoardByAddress_district(@Args('district') district: string) {
-    const result = await this.boardsService.findDistrict({ district });
+  // @Query(() => [Boards])
+  // async fetchBoardByAddress_district(@Args('district') district: string) {
+  //   const result = await this.boardsService.findDistrict({ district });
 
-    return result;
-  }
+  //   return result;
+  // }
 
   @Query(() => [Boards])
   async fetchRecentBoards(@Args('artistId') artistId: string) {

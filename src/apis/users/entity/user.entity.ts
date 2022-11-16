@@ -45,8 +45,13 @@ export class User {
   @Field(() => UserAuthority)
   authorities?: UserAuthority;
 
-  @JoinColumn()
-  @OneToOne(() => UserImage, (userImage) => userImage.user)
-  @Field(() => UserImage, { nullable: true })
-  userImage: UserImage;
+  // @JoinColumn()
+  // @OneToOne(() => UserImage, (userImage) => userImage.user)
+  // @Field(() => UserImage, { nullable: true })
+  // userImage: UserImage;
+  @Column()
+  @Field(() => String, {
+    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
+  })
+  userImageURL: string;
 }
