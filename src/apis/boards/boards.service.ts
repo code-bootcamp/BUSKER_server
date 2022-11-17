@@ -6,6 +6,7 @@ import { Artist } from '../artists/entity/artist.entity';
 import { BoardAddress } from '../boardAddress/entity/boardAddress.entity';
 import { BoardImages } from '../boardImages/entity/boardImages.entity';
 import { Category } from '../categories/entities/categories.entity';
+import { Comments } from '../comments/entity/comments.entity';
 
 import { Boards } from './entites/boards.entity';
 
@@ -20,11 +21,14 @@ export class BoardsService {
     private readonly artistRepository: Repository<Artist>,
     @InjectRepository(BoardAddress)
     private readonly boardAddressRepository: Repository<BoardAddress>,
-    @InjectRepository(BoardImages)
-    private readonly boardImagesRepository: Repository<BoardImages>,
     @InjectRepository(UserAuthority)
     private readonly userAuthorityRepository: Repository<UserAuthority>,
+    @InjectRepository(BoardImages)
+    private readonly boardImageRepository: Repository<BoardImages>,
+    @InjectRepository(Comments)
+    private readonly commentRepository: Repository<Comments>,
   ) {}
+
   paging({ value, page }) {
     const arr = [];
     for (let i = 0; i < value.length; i++) {
@@ -37,8 +41,10 @@ export class BoardsService {
     }
     return arr[page - 1];
   }
+
   async create({ context, createBoardInput }) {
-    const { category, boardAddressInput, ...boards } = createBoardInput;
+    const { category, boardImageURL, boardAddressInput, ...boards } =
+      createBoardInput;
 
     const userId = context.req.user.id;
 
@@ -54,6 +60,7 @@ export class BoardsService {
         id: category,
       },
     });
+
     if (!boardCategory)
       throw new UnprocessableEntityException(
         '잘못된 카테고리 혹은 카테고리가 없습니다.',
@@ -83,13 +90,24 @@ export class BoardsService {
       end_time: end,
     });
 
+    for (let i = 0; i < boardImageURL.length; i++) {
+      await this.boardImageRepository.save({
+        url: boardImageURL[i],
+        boards: result,
+      });
+    }
+
     return result;
   }
 
-  async findAll({ searchBoardInput }) {
+  async findAll() {
+    return await this.boardRepository.find();
+  }
+
+  async findSearch({ searchBoardInput }) {
     if (!searchBoardInput) {
       const value = await this.boardRepository.find({
-        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+        relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
       });
 
       const now = new Date();
@@ -122,7 +140,7 @@ export class BoardsService {
             address_district: district,
           },
         },
-        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+        relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
       });
 
       const now = new Date();
@@ -152,7 +170,7 @@ export class BoardsService {
             address_district: district,
           },
         },
-        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+        relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
       });
 
       const now = new Date();
@@ -181,7 +199,7 @@ export class BoardsService {
             id: In(category),
           },
         },
-        relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+        relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
       });
 
       const now = new Date();
@@ -218,7 +236,7 @@ export class BoardsService {
           id: artistId,
         },
       },
-      relations: ['artist', 'boardImages'],
+      relations: ['artist', 'boardImageURL'],
     });
 
     recent.sort(function (a, b) {
@@ -282,8 +300,8 @@ export class BoardsService {
         'category',
         'artist',
         'boardAddress',
-        'boardImages',
         'comments',
+        'boardImageURL',
       ],
     });
 
@@ -295,16 +313,39 @@ export class BoardsService {
   }
 
   async delete({ boardId }) {
+    await this.boardImageRepository.delete({
+      boards: {
+        id: boardId,
+      },
+    });
+
+    await this.commentRepository.delete({
+      board: {
+        id: boardId,
+      },
+    });
+
+    const board = await this.boardRepository.findOne({
+      where: {
+        id: boardId,
+      },
+      relations: ['boardAddress'],
+    });
+
     const result = await this.boardRepository.delete({ id: boardId });
+
+    await this.boardAddressRepository.delete({
+      id: board.boardAddress.id,
+    });
+
     return result.affected ? true : false;
   }
 
   async update({ context, boardId, updateBoardInput }) {
     const myBoard = await this.boardRepository.findOne({
       where: { id: boardId },
-      relations: ['category', 'artist', 'boardAddress', 'boardImages'],
+      relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
     });
-
     if (!myBoard) {
       throw new UnprocessableEntityException('존재하지않는 게시물입니다.');
     }
@@ -326,6 +367,15 @@ export class BoardsService {
       },
       relations: ['artist'],
     });
+
+    // 기존 이미지 삭제
+    const boardImages = myBoard.boardImageURL;
+    for (let i = 0; i < boardImages.length; i++) {
+      const boardImageId = boardImages[i].id;
+      this.boardImageRepository.delete({
+        id: boardImageId,
+      });
+    }
 
     if (auth.artistId !== myBoard.artist.id) {
       throw new UnprocessableEntityException(
@@ -356,6 +406,14 @@ export class BoardsService {
         end_time: end,
       });
 
+      const newBoardImg = result.boardImageURL;
+      for (let i = 0; i < newBoardImg.length; i++) {
+        const url = newBoardImg[i];
+        this.boardImageRepository.save({
+          url,
+          boards: result,
+        });
+      }
       return result;
     } else {
       const result = await this.boardRepository.save({
@@ -367,6 +425,15 @@ export class BoardsService {
         start_time: start,
         end_time: end,
       });
+
+      const newBoardImg = result.boardImageURL;
+      for (let i = 0; i < newBoardImg.length; i++) {
+        const url = newBoardImg[i];
+        this.boardImageRepository.save({
+          url,
+          boards: result,
+        });
+      }
 
       return result;
     }
