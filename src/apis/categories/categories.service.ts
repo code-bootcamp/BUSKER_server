@@ -19,4 +19,10 @@ export class CategoryService {
   async findAll() {
     return await this.categoryRepository.find();
   }
+
+  async findOne({ categoryId }) {
+    return await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
+  }
 }

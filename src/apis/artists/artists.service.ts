@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import { Repository } from 'typeorm';
 import { Artist } from './entity/artist.entity';
 
@@ -34,16 +33,18 @@ export class ArtistsService {
   async findOne({ artistId }) {
     return await this.artistRepository.findOne({
       where: { id: artistId },
-      relations: ['artist_image', 'category', 'member'],
+      relations: ['category'],
     });
   }
 
   async update({ artistId, ...updateInput }) {
-    const result = await this.artistRepository.update(
-      { id: artistId },
-      { ...updateInput },
-    );
-    return result.affected ? true : false;
+    const artist = await this.artistRepository.findOne({ where: artistId });
+    const result = await this.artistRepository.save({
+      id: artistId,
+      ...artist,
+      ...updateInput,
+    });
+    return result;
   }
 
   async delete({ artistId }) {

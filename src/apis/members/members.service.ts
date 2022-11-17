@@ -14,18 +14,25 @@ export class MembersService {
     private readonly artistsRepository: Repository<Artist>,
   ) {}
 
+  findAll() {
+    return this.membersRepository.find({
+      relations: ['artist'],
+    });
+  }
+
   findOne({ memberId }) {
     return this.membersRepository.findOne({ where: { id: memberId } });
   }
 
   // 멤버 등록
   async create({ artistId, createMemberInput }) {
+    console.log('hello world');
     const artist = await this.artistsRepository.findOne({
       where: { id: artistId },
+      relations: ['pick_user', 'category'],
     });
-    const { ...memberData } = createMemberInput;
-    const member: any = await this.membersRepository.save({
-      ...memberData,
+    const member = await this.membersRepository.save({
+      ...createMemberInput,
       artist,
     });
     return member;

@@ -1,6 +1,4 @@
-import { Member } from 'src/apis/members/entity/member.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ArtistImage } from 'src/apis/artistImage/entity/artistImage.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import {
@@ -9,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -36,28 +33,12 @@ export class Artist {
   @Field(() => [LikeArtist])
   pick_user: LikeArtist[];
 
-  // @JoinColumn()
-  // @OneToOne(() => ArtistImage, (artist_image) => artist_image.artist)
-  // @Field(() => ArtistImage, { nullable: true })
-  // artist_image?: ArtistImage;
   @Column()
-  @Field(() => String, {
-    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
-  })
+  @Field(() => String)
   artistImageURL: string;
-
-  // @Column()
-  // @Field(() => String, {
-  //   defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
-  // })
-  // artistImageURL: string;
 
   @ManyToOne(() => Category)
   @JoinColumn()
   @Field(() => Category)
   category: Category;
-
-  @OneToMany(() => Member, (member) => member.artist)
-  @Field(() => Member, { nullable: true })
-  member?: Member;
 }

@@ -34,8 +34,8 @@ export class Boards {
   @Field(() => Date)
   start_time: Date;
 
-  @Column()
-  @Field(() => Date)
+  @Column({ nullable: true })
+  @Field(() => Date, { nullable: true })
   end_time: Date;
 
   @Column({ default: false })
@@ -65,9 +65,9 @@ export class Boards {
   // })
   // @Field(() => [BoardImages])
   // boardImages: BoardImages[];
-  @Column()
-  @Field(() => String)
-  boardImageURL: string;
+  @Column({ type: 'simple-array' })
+  @Field(() => [String])
+  boardImageURL: string[];
 
   @JoinColumn()
   @OneToMany(() => Comments, (comments) => comments.board)

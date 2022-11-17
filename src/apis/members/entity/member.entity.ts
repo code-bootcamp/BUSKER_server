@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -25,13 +26,12 @@ export class Member {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Artist, (artist) => artist.member)
+  @JoinColumn()
+  @ManyToOne(() => Artist)
   @Field(() => Artist, { nullable: true })
   artist: Artist;
 
   @Column()
-  @Field(() => String, {
-    defaultValue: "'https://i.ibb.co/PYBhzR8/noprofile.jpg'",
-  })
+  @Field(() => String)
   memberImageURL: string;
 }

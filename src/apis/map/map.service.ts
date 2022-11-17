@@ -17,7 +17,6 @@ export class MapService {
       .leftJoinAndSelect('boards.boardAddress', 'boardAddress')
       .leftJoinAndSelect('boards.category', 'category')
       .leftJoinAndSelect('boards.artist', 'artist')
-      .leftJoinAndSelect('artist.artist_image', 'artist_image')
 
       .where('boards.end_time > now()')
       .andWhere('boards.start_time < now()')
