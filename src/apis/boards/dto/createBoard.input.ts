@@ -3,20 +3,20 @@ import { BoardAddressInput } from 'src/apis/boardAddress/dto/createboardAddress.
 
 @InputType()
 export class CreateBoardInput {
-  @Field(() => String)
-  title: string;
+  // @Field(() => String)
+  // title: string;
 
   @Field(() => String)
   contents: string;
 
-  @Field(() => Date)
-  start_time: Date;
+  @Field(() => String, { nullable: true })
+  start_time: string;
 
-  @Field(() => Date, { nullable: true })
-  end_time: Date;
+  @Field(() => String, { nullable: true })
+  end_time: string;
 
   @Field(() => String)
-  categoryId: string;
+  category: string;
 
   @Field(() => BoardAddressInput)
   boardAddressInput: BoardAddressInput;
