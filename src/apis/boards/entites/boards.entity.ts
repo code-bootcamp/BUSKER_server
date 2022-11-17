@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { BoardAddress } from 'src/apis/boardAddress/entity/boardAddress.entity';
+import { BoardImages } from 'src/apis/boardImages/entity/boardImages.entity';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 import { Comments } from 'src/apis/comments/entity/comments.entity';
 
@@ -34,8 +35,8 @@ export class Boards {
   @Field(() => Date)
   start_time: Date;
 
-  @Column({ nullable: true })
-  @Field(() => Date, { nullable: true })
+  @Column()
+  @Field(() => Date)
   end_time: Date;
 
   @Column({ default: false })
@@ -65,9 +66,15 @@ export class Boards {
   // })
   // @Field(() => [BoardImages])
   // boardImages: BoardImages[];
-  @Column({ type: 'simple-array' })
-  @Field(() => [String])
-  boardImageURL: string[];
+
+  // @Column()
+  // @Field(() => String)
+  // boardImageURL: string;
+
+  @JoinColumn()
+  @OneToMany(() => BoardImages, (boardImageURL) => boardImageURL.boards)
+  @Field(() => [BoardImages])
+  boardImageURL: [BoardImages];
 
   @JoinColumn()
   @OneToMany(() => Comments, (comments) => comments.board)
