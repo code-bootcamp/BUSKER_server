@@ -1,4 +1,3 @@
-import { UserImage } from './../../userImage/entity/userImage.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
 import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
@@ -6,7 +5,6 @@ import { UserAuthority } from 'src/commons/role/entity/userAuthority.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -19,7 +17,7 @@ export class User {
   @Field(() => String)
   id: string;
 
-  @Column({ unique: true, type: 'varchar', length: 20 })
+  @Column({ unique: true, type: 'varchar', length: 200 })
   @Field(() => String)
   email: string;
 
@@ -29,7 +27,7 @@ export class User {
   @Column({ default: false, type: 'boolean' })
   is_auth: boolean;
 
-  @Column({ type: 'varchar', length: 100, generated: 'uuid' })
+  @Column({ type: 'varchar', length: 200, generated: 'uuid' })
   @Field(() => String)
   nickname: string;
 
