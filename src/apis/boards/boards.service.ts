@@ -91,12 +91,14 @@ export class BoardsService {
     });
 
     const temp = [];
-    for (let i = 0; i < boardImageURL.length; i++) {
-      const image = await this.boardImageRepository.save({
-        url: boardImageURL[i],
-        boards: result,
-      });
-      temp.push(image);
+    if (createBoardInput.boardImageURL) {
+      for (let i = 0; i < boardImageURL.length; i++) {
+        const image = await this.boardImageRepository.save({
+          url: boardImageURL[i],
+          boards: result,
+        });
+        temp.push(image);
+      }
     }
     result.boardImageURL = temp;
 
@@ -409,17 +411,19 @@ export class BoardsService {
         end_time: end,
       });
 
-      const temp = [];
-      const newBoardImg = result.boardImageURL;
-      for (let i = 0; i < newBoardImg.length; i++) {
-        const url = newBoardImg[i];
-        const image = await this.boardImageRepository.save({
-          url,
-          boards: result,
-        });
-        temp.push(image);
+      if (updateBoardInput.boardImageURL) {
+        const temp = [];
+        const newBoardImg = result.boardImageURL;
+        for (let i = 0; i < newBoardImg.length; i++) {
+          const url = newBoardImg[i];
+          const image = await this.boardImageRepository.save({
+            url,
+            boards: result,
+          });
+          temp.push(image);
+        }
+        result.boardImageURL = temp;
       }
-      result.boardImageURL = temp;
 
       return result;
     } else {
@@ -433,17 +437,20 @@ export class BoardsService {
         end_time: end,
       });
 
-      const temp = [];
-      const newBoardImg = result.boardImageURL;
-      for (let i = 0; i < newBoardImg.length; i++) {
-        const url = newBoardImg[i];
-        const image = await this.boardImageRepository.save({
-          url,
-          boards: result,
-        });
-        temp.push(image);
+      if (updateBoardInput.boardImageURL) {
+        const temp = [];
+        const newBoardImg = result.boardImageURL;
+        for (let i = 0; i < newBoardImg.length; i++) {
+          const url = newBoardImg[i];
+          const image = await this.boardImageRepository.save({
+            url,
+            boards: result,
+          });
+          temp.push(image);
+        }
+        result.boardImageURL = temp;
       }
-      result.boardImageURL = temp;
+
       return result;
     }
   }
