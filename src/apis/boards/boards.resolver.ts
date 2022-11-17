@@ -16,15 +16,19 @@ export class BoardsResolver {
   constructor(private readonly boardsService: BoardsService) {}
 
   @Query(() => [Boards])
-  async fetchBoards(
+  async fetchBoardsBySearch(
     @Args({ name: 'searchBoardInput', nullable: true })
     searchBoardInput: SearchBoardInput,
   ) {
-    const result = await this.boardsService.findAll({
+    const result = await this.boardsService.findSearch({
       searchBoardInput,
     });
-
     return result;
+  }
+
+  @Query(() => [Boards])
+  async fetchBoards() {
+    return await this.boardsService.findAll();
   }
 
   @UseGuards(GqlAuthAccessGuard)
