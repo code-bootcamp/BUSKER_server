@@ -54,7 +54,7 @@ export class ArtistsResolver {
   @Roles(RoleType.ARTIST)
   @UseGuards(RolesGuard)
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Boolean)
+  @Mutation(() => Artist)
   async updateArtist(
     @CurrentUser() currentUser,
     @Args('updateArtistInput') updateArtistInput: UpdateArtistInput,
