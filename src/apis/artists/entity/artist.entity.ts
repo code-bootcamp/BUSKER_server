@@ -17,15 +17,15 @@ export class Artist {
   @Field(() => String)
   id: string;
 
-  @Column({ type: 'varchar', length: 30, unique: true })
+  @Column({ type: 'varchar', length: 300, unique: true })
   @Field(() => String)
   active_name: string;
 
-  @Column({ type: 'varchar', length: 300 })
+  @Column({ type: 'varchar', length: 500 })
   @Field(() => String)
   description: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 500 })
   @Field(() => String)
   promotion_url: string;
 
