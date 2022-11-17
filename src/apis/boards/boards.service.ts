@@ -106,7 +106,9 @@ export class BoardsService {
   }
 
   async findAll() {
-    return await this.boardRepository.find();
+    return await this.boardRepository.find({
+      relations: ['category', 'artist', 'boardAddress', 'boardImageURL'],
+    });
   }
 
   async findSearch({ searchBoardInput }) {
