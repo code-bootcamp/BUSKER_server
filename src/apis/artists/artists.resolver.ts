@@ -62,9 +62,10 @@ export class ArtistsResolver {
     const role = await this.roleService.findOneWithUserId({
       userId: currentUser.id,
     });
+
     return await this.artistsService.update({
       artistId: role.artistId,
-      ...updateArtistInput,
+      updateArtistInput,
     });
   }
 
@@ -77,5 +78,10 @@ export class ArtistsResolver {
       userId: currentUser.id,
     });
     return await this.artistsService.delete({ artistId: role.artistId });
+  }
+
+  @Query(() => Artist)
+  async fetchArtistWithoutAuth(@Args('artistId') artistId: string) {
+    return await this.artistsService.findOne({ artistId });
   }
 }
