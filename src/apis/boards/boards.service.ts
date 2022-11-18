@@ -30,6 +30,9 @@ export class BoardsService {
   ) {}
 
   paging({ value, page }) {
+    value.sort(function (a, b) {
+      return b.createAt < a.createAt ? -1 : b.createAt > a.createAt ? 1 : 0;
+    });
     const arr = [];
     for (let i = 0; i < value.length; i++) {
       const temp = [];
@@ -134,7 +137,9 @@ export class BoardsService {
         }
       }
       const page = 1;
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
     const { page, category, district } = searchBoardInput;
     if (category && district) {
@@ -167,7 +172,9 @@ export class BoardsService {
         }
       }
 
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!category) {
@@ -196,7 +203,9 @@ export class BoardsService {
           });
         }
       }
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!district) {
@@ -225,14 +234,17 @@ export class BoardsService {
           });
         }
       }
-
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!category && !district) {
       const value = await this.boardRepository.find();
 
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
   }
 
