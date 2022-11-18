@@ -59,7 +59,6 @@ export class AuthService {
     if (!user)
       throw new UnprocessableEntityException('해당 이메일이 없습니다.');
     const isAuth = await bcrypt.compare(password, user.password);
-    console.log(isAuth);
     if (!isAuth) {
       if (user.wrong_pass === 5) {
         throw new UnauthorizedException('비밀번호 재설정이 필요합니다.');
