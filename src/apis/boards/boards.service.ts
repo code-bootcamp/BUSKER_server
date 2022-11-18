@@ -134,7 +134,9 @@ export class BoardsService {
         }
       }
       const page = 1;
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
     const { page, category, district } = searchBoardInput;
     if (category && district) {
@@ -167,7 +169,9 @@ export class BoardsService {
         }
       }
 
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!category) {
@@ -196,7 +200,9 @@ export class BoardsService {
           });
         }
       }
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!district) {
@@ -225,14 +231,17 @@ export class BoardsService {
           });
         }
       }
-
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
 
     if (!category && !district) {
       const value = await this.boardRepository.find();
 
-      return this.paging({ value, page });
+      const result = this.paging({ value, page });
+      if (!result) return [];
+      return result;
     }
   }
 
