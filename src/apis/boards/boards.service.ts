@@ -30,6 +30,9 @@ export class BoardsService {
   ) {}
 
   paging({ value, page }) {
+    value.sort(function (a, b) {
+      return b.createAt < a.createAt ? -1 : b.createAt > a.createAt ? 1 : 0;
+    });
     const arr = [];
     for (let i = 0; i < value.length; i++) {
       const temp = [];
