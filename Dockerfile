@@ -4,7 +4,6 @@ FROM node:16-alpine
 WORKDIR /myfolder/
 COPY ./package.json /myfolder/
 # COPY ./yarn.lock /myfolder/
-COPY ./yarn.lock /myfolder/
 RUN yarn install --production
 
 
