@@ -1,11 +1,11 @@
 steps:
-  - name: docker/compose:2.10.2
+  - name: docker/compose:1.29.0
     args:
       - -f
       - offline_9th_team03_server/docker-compose.prod.yaml
       - build
 
-  - name: docker/compose:2.10.2
+  - name: docker/compose:1.29.0
     args:
       - -f
       - offline_9th_team03_server/docker-compose.prod.yaml
