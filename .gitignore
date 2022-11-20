@@ -7,7 +7,6 @@ https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visuals
 .env*
 yarn.lock
 docker-compose.yaml
-Dockerfile
 .dockerignore
 /gcp-busker.json
 
