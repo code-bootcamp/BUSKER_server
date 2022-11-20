@@ -1,0 +1,24 @@
+steps:
+  - name: docker/compose:1.29.0
+    args:
+      - -f
+      - offline_9th_team03_server/docker-compose.prod.yaml
+      - build
+
+  - name: docker/compose:1.29.0
+    args:
+      - -f
+      - offline_9th_team03_server/docker-compose.prod.yaml
+      - push
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      [
+        'set',
+        'image',
+        'deployment/busker--backend',
+        'my-backend-sha256-1=asia.gcr.io/busker-368211/my_backend:8.1',
+      ]
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=asia-northeast3
+      - CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-2
