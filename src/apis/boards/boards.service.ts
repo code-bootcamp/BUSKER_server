@@ -264,8 +264,8 @@ export class BoardsService {
 
     const temp = [];
     for (let i = 0; i < 3; i++) {
-      temp.push(recent[i]);
       if (!recent[i]) break;
+      temp.push(recent[i]);
     }
     return temp;
   }

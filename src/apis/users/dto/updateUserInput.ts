@@ -4,4 +4,7 @@ import { Field, InputType } from '@nestjs/graphql';
 export class UpdateUserInput {
   @Field(() => String)
   nickname: string;
+
+  @Field(() => String)
+  userImageURL: string;
 }

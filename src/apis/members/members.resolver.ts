@@ -1,12 +1,9 @@
-import { ArtistsService } from './../artists/artists.service';
-import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateMemberInput } from './dto/updateMemberInput';
 import { CreateMemberInput } from './dto/createMemberInput';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { Member } from './entity/member.entity';
 import { MembersService } from './members.service';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Resolver()
 export class MembersResolver {
@@ -15,8 +12,8 @@ export class MembersResolver {
   ) {}
 
   @Query(() => [Member])
-  fetchMembers() {
-    return this.membersService.findAll();
+  fetchMembers(@Args('artistId') artistId: string) {
+    return this.membersService.findOne({ artistId });
   }
 
   // 멤버 등록
@@ -31,22 +28,22 @@ export class MembersResolver {
   // 멤버 수정
   @Mutation(() => Boolean)
   async updateMember(
-    @Args('memberId') memberId: string, //
+    @Args('artistId') artistId: string, //
     @Args('updateMemberInput') updateMemberInput: UpdateMemberInput, //
   ) {
-    const result = await this.membersService.findOne({ memberId });
+    const result = await this.membersService.findOne({ artistId });
     if (!result) throw new NotFoundException('not found member');
     return await this.membersService.update({
-      memberId,
+      artistId,
       ...updateMemberInput,
     });
   }
 
   // 멤버 삭제
   @Mutation(() => Boolean)
-  async deleteMember(@Args('memberId') memberId: string) {
-    const result = await this.membersService.findOne({ memberId });
+  async deleteMember(@Args('artistId') artistId: string) {
+    const result = await this.membersService.findOne({ artistId });
     if (!result) throw new NotFoundException('not found member');
-    return await this.membersService.delete({ memberId });
+    return await this.membersService.delete({ artistId });
   }
 }
