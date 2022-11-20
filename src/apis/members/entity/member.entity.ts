@@ -1,4 +1,3 @@
-import { MemberImage } from './../../memberImage/entity/memberImage.entity';
 import { Artist } from 'src/apis/artists/entity/artist.entity';
 import { ObjectType, Field } from '@nestjs/graphql';
 import {
@@ -18,9 +17,11 @@ export class Member {
   id: string;
 
   @Column({ type: 'varchar', length: 30 })
+  @Field(() => String)
   name: string;
 
   @Column({ type: 'varchar', length: 30 })
+  @Field(() => String)
   role: string;
 
   @CreateDateColumn()

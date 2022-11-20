@@ -1,5 +1,5 @@
 import { Artist } from 'src/apis/artists/entity/artist.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Member } from './entity/member.entity';
@@ -14,19 +14,23 @@ export class MembersService {
     private readonly artistsRepository: Repository<Artist>,
   ) {}
 
-  findAll() {
-    return this.membersRepository.find({
+  async findOne({ artistId }) {
+    const result = await this.membersRepository.find({
+      where: {
+        artist: {
+          id: artistId,
+        },
+      },
       relations: ['artist'],
     });
-  }
+    if (!result)
+      throw new UnprocessableEntityException('해당 아티스트가 없습니다.');
 
-  findOne({ memberId }) {
-    return this.membersRepository.findOne({ where: { id: memberId } });
+    return result;
   }
 
   // 멤버 등록
   async create({ artistId, createMemberInput }) {
-    console.log('hello world');
     const artist = await this.artistsRepository.findOne({
       where: { id: artistId },
       relations: ['pick_user', 'category'],
@@ -39,17 +43,17 @@ export class MembersService {
   }
 
   // 멤버 수정
-  async update({ memberId, ...updateMemberInput }) {
+  async update({ artistId, ...updateMemberInput }) {
     const result = await this.membersRepository.update(
-      { id: memberId }, //
+      { id: artistId }, //
       { ...updateMemberInput },
     );
     return result.affected ? true : false;
   }
 
   // 멤버 삭제
-  async delete({ memberId }) {
-    const result = await this.membersRepository.softDelete({ id: memberId });
+  async delete({ artistId }) {
+    const result = await this.membersRepository.softDelete({ id: artistId });
     return result.affected ? true : false;
   }
 }

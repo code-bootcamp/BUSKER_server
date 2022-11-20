@@ -37,12 +37,13 @@ export class ArtistsService {
     });
   }
 
-  async update({ artistId, ...updateInput }) {
-    const artist = await this.artistRepository.findOne({ where: artistId });
+  async update({ artistId, updateArtistInput }) {
+    const artist = await this.artistRepository.findOne({
+      where: { id: artistId },
+    });
     const result = await this.artistRepository.save({
-      id: artistId,
       ...artist,
-      ...updateInput,
+      ...updateArtistInput,
     });
     return result;
   }
