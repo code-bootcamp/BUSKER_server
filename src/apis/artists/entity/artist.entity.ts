@@ -1,3 +1,4 @@
+import { Member } from 'src/apis/members/entity/member.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Category } from 'src/apis/categories/entities/categories.entity';
 import { LikeArtist } from 'src/apis/likeArtist/entity/likeArtist.entity';
