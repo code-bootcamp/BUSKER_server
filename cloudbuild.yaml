@@ -17,7 +17,7 @@ steps:
         'set',
         'image',
         'deployment/busker--backend',
-        'my-backend-sha256-1=asia.gcr.io/busker-368211/my_backend:8.6',
+        'my-backend-sha256-1=asia.gcr.io/busker-368211/my_backend:8.7',
       ]
     env:
       - CLOUDSDK_COMPUTE_ZONE=asia-northeast3
