@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/gql-auth.guard';
 import { CurrentUser } from 'src/commons/types/current.type';
@@ -21,6 +21,14 @@ export class LikeArtistResolver {
         artistId,
       });
     } else {
+      const isExist = await this.likeArtistService.findOne({
+        userId: currentUser.id,
+        artistId,
+      });
+
+      if (isExist) {
+        throw new UnprocessableEntityException('already exist like');
+      }
       return await this.likeArtistService.create({
         userId: currentUser.id,
         artistId,
