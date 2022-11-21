@@ -3,6 +3,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -26,6 +27,9 @@ export class Member {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @JoinColumn()
   @ManyToOne(() => Artist)

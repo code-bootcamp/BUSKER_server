@@ -13,7 +13,7 @@ export class MembersResolver {
 
   @Query(() => [Member])
   fetchMembers(@Args('artistId') artistId: string) {
-    return this.membersService.findOne({ artistId });
+    return this.membersService.findAll({ artistId });
   }
 
   // 멤버 등록
@@ -28,22 +28,22 @@ export class MembersResolver {
   // 멤버 수정
   @Mutation(() => Boolean)
   async updateMember(
-    @Args('artistId') artistId: string, //
+    @Args('memberId') memberId: string, //
     @Args('updateMemberInput') updateMemberInput: UpdateMemberInput, //
   ) {
-    const result = await this.membersService.findOne({ artistId });
+    const result = await this.membersService.findOne({ memberId });
     if (!result) throw new NotFoundException('not found member');
     return await this.membersService.update({
-      artistId,
+      memberId,
       ...updateMemberInput,
     });
   }
 
   // 멤버 삭제
   @Mutation(() => Boolean)
-  async deleteMember(@Args('artistId') artistId: string) {
-    const result = await this.membersService.findOne({ artistId });
+  async deleteMember(@Args('memberId') memberId: string) {
+    const result = await this.membersService.findOne({ memberId });
     if (!result) throw new NotFoundException('not found member');
-    return await this.membersService.delete({ artistId });
+    return await this.membersService.delete({ memberId });
   }
 }
