@@ -1,11 +1,12 @@
 import { ConflictException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/gql-auth.guard';
 import { RoleService } from 'src/commons/role/role.service';
 import { Roles } from 'src/commons/role/roles.decorator';
 import { RolesGuard } from 'src/commons/role/roles.guard';
 import { RoleType } from 'src/commons/role/type/role-type';
 import { CurrentUser } from 'src/commons/types/current.type';
+import { LikeArtistService } from '../likeArtist/likeArtist.service';
 import { ArtistsService } from './artists.service';
 import { CreateArtistInput } from './dto/createArtistInput';
 import { UpdateArtistInput } from './dto/updateArtistInput';
@@ -16,6 +17,7 @@ export class ArtistsResolver {
   constructor(
     private readonly artistsService: ArtistsService,
     private readonly roleService: RoleService,
+    private readonly likeArtistService: LikeArtistService,
   ) {}
 
   @UseGuards(GqlAuthAccessGuard)
@@ -83,5 +85,10 @@ export class ArtistsResolver {
   @Query(() => Artist)
   async fetchArtistWithoutAuth(@Args('artistId') artistId: string) {
     return await this.artistsService.findOne({ artistId });
+  }
+
+  @Query(() => Int)
+  async fetchArtistCount(@Args('artistId') artistId: string) {
+    return await this.likeArtistService.count({ artistId });
   }
 }
