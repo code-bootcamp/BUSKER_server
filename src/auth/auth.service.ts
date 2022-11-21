@@ -177,6 +177,6 @@ export class AuthService {
 
     // 3. 회원가입이 되어있다면? 로그인(refreshToken, accessToken 만들어서 프론트엔드에 주기)
     this.setRefreshToken({ user, res, req });
-    res.redirect('http://localhost:3000');
+    res.redirect('https://busker.shop');
   }
 }

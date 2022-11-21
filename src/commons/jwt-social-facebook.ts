@@ -8,7 +8,7 @@ export class JwtFacebookStrategy extends PassportStrategy(
     super({
       clientID: process.env.FACEBOOK_CLIENT_ID, //
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/login/facebook',
+      callbackURL: 'https://busker.shop',
       scope: ['public_profile', 'email'],
       profileFields: ['id', 'email'],
       prompt: 'consent',
