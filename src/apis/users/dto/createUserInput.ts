@@ -26,7 +26,7 @@ export class CreateUserInput {
 
   @Field(() => String, {
     nullable: true,
-    defaultValue: '93069087-e34c-428f-9636-f7a9d497c733noprofile.jpeg',
+    defaultValue: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
   })
   userImageURL: string;
 }
