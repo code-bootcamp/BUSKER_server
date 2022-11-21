@@ -9,10 +9,18 @@ import { Category } from '../categories/entities/categories.entity';
 import { ArtistsResolver } from './artists.resolver';
 import { ArtistsService } from './artists.service';
 import { Artist } from './entity/artist.entity';
+import { LikeArtistService } from '../likeArtist/likeArtist.service';
+import { LikeArtist } from '../likeArtist/entity/likeArtist.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Category, Artist, UserAuthority, ArtistImage]),
+    TypeOrmModule.forFeature([
+      Category,
+      Artist,
+      UserAuthority,
+      ArtistImage,
+      LikeArtist,
+    ]),
   ],
   providers: [
     ArtistsResolver,
@@ -20,6 +28,7 @@ import { Artist } from './entity/artist.entity';
     JwtAccessStrategy,
     RoleService,
     FilesService,
+    LikeArtistService,
   ],
 })
 export class ArtistsModule {}

@@ -16,6 +16,14 @@ export class LikeArtistService {
     });
   }
 
+  async findOne({ userId, artistId }) {
+    return await this.likeArtistRepository
+      .createQueryBuilder('likeArtist')
+      .where('likeArtist.artist = :artistId', { artistId })
+      .andWhere('likeArtist.user = :userId', { userId })
+      .getOne();
+  }
+
   async findLikesByUserId({ userId }) {
     return await this.likeArtistRepository.find({ where: { user: userId } });
   }
@@ -34,5 +42,13 @@ export class LikeArtistService {
       artist: artistId,
     });
     return result.affected ? true : false;
+  }
+
+  async count({ artistId }) {
+    // 아티트의 좋아요 수를 반환하는 함수
+    return await this.likeArtistRepository
+      .createQueryBuilder('likeArtist')
+      .where('likeArtist.artist = :artistId', { artistId })
+      .getCount();
   }
 }
