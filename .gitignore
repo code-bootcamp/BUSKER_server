@@ -7,7 +7,6 @@ https://www.toptal.com/developers/gitignore?templates=dotenv,node,nextjs,visuals
 .env*
 yarn.lock
 docker-compose.yaml
-Dockerfile
 .dockerignore
 /gcp-busker.json
 
@@ -859,8 +858,6 @@ FodyWeavers.xsd
 https://www.toptal.com/developers/gitignore/api/dotenv,node,nextjs,visualstudiocode,visualstudio,intellij,eclipse,windows,macos,linux
 
 #Docker
-DockerFile
-Dockerfile
 docker-compose.yml
 docker-compose.override.yml
 docker-compose.yaml

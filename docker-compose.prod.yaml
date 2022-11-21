@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   my-backend:
-    image: asia.gcr.io/busker-368211/my-backend:6.3
+    image: asia.gcr.io/busker-368211/my-backend:9.0
     platform: linux/x86_64
     build:
       context: .
