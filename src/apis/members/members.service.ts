@@ -14,7 +14,7 @@ export class MembersService {
     private readonly artistsRepository: Repository<Artist>,
   ) {}
 
-  async findOne({ artistId }) {
+  async findAll({ artistId }) {
     const result = await this.membersRepository.find({
       where: {
         artist: {
@@ -27,6 +27,13 @@ export class MembersService {
       throw new UnprocessableEntityException('해당 아티스트가 없습니다.');
 
     return result;
+  }
+
+  async findOne({ memberId }) {
+    return await this.membersRepository.findOne({
+      where: { id: memberId },
+      relations: ['artist'],
+    });
   }
 
   // 멤버 등록
@@ -43,17 +50,17 @@ export class MembersService {
   }
 
   // 멤버 수정
-  async update({ artistId, ...updateMemberInput }) {
+  async update({ memberId, ...updateMemberInput }) {
     const result = await this.membersRepository.update(
-      { id: artistId }, //
+      { id: memberId }, //
       { ...updateMemberInput },
     );
     return result.affected ? true : false;
   }
 
   // 멤버 삭제
-  async delete({ artistId }) {
-    const result = await this.membersRepository.softDelete({ id: artistId });
+  async delete({ memberId }) {
+    const result = await this.membersRepository.softDelete({ id: memberId });
     return result.affected ? true : false;
   }
 }
