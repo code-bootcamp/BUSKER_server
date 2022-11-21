@@ -255,7 +255,7 @@ export class BoardsService {
           id: artistId,
         },
       },
-      relations: ['artist', 'boardImageURL'],
+      relations: ['artist', 'boardImageURL', 'boardAddress', 'category'],
     });
 
     recent.sort(function (a, b) {
