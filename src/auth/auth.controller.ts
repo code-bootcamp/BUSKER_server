@@ -5,10 +5,10 @@ import { User } from 'src/apis/users/entity/user.entity';
 import { AuthService } from './auth.service';
 
 interface IOAuthUser {
-  user: Pick<User, 'email' | 'nickname' | 'password'>;
+  user: Pick<User, 'email' | 'nickname' | 'password' | 'userImageURL'>;
 }
 
-@Controller()
+@Controller('/')
 export class AuthController {
   constructor(
     private readonly authService: AuthService, //
