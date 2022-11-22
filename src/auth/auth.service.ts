@@ -27,8 +27,6 @@ export class AuthService {
     private readonly cacheManager: Cache,
     @InjectRepository(UserAuthority)
     private readonly userAuthorityRepository: Repository<UserAuthority>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
   ) {}
 
   setRefreshToken({ user, res, req }) {
@@ -36,7 +34,7 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    const originList = ['http://localhost:3000', 'https://busker.shop'];
+    const originList = ['https://busker.shop', 'http://localhost:3000'];
     const origin = req.headers.origin;
     if (originList.includes(origin)) {
       res.setHeader('Access-Control-Allow-Origin', origin); //프론트와 연결
@@ -133,7 +131,7 @@ export class AuthService {
         },
       );
       // 쿠키 지움
-      const originList = ['http://localhost:3000', 'https://busker.shop'];
+      const originList = ['https://busker.shop', 'http://localhost:3000'];
       const origin = req.headers.origin;
       if (originList.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin); //프론트와 연결

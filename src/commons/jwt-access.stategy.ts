@@ -22,7 +22,6 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     if (isExpire) {
       throw new UnauthorizedException('Access Token Expired');
     }
-    console.log('payload.role', payload.role);
     return { email: payload.email, id: payload.sub, role: payload.role };
   }
 }
