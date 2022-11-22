@@ -41,7 +41,9 @@ export class CommentsService {
       relations: ['user', 'board'],
     });
 
-    return result;
+    return result.sort(function (a, b) {
+      return b.createAt < a.createAt ? -1 : b.createAt > a.createAt ? 1 : 0;
+    });
   }
 
   async delete({ context, commentId }) {
