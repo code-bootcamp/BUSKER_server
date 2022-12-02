@@ -24,10 +24,6 @@
 -------------------
 <img width="1920" alt="image" src="https://user-images.githubusercontent.com/110365852/205241303-49e15dc7-a849-4c7b-b5cb-49cb551020e0.png">
 
-## 📋 Wireframe
--------------------
-<img width="1920" alt="image" src="https://user-images.githubusercontent.com/110365852/205241750-d4423568-91a6-47b8-9b69-4b0dd2cf033a.png">
-
 ## 📋 Data Flow
 -------------------
 <img width="40%" alt="image" src="https://user-images.githubusercontent.com/110365852/205242368-480cba46-3262-4fee-8a1d-ab840bd1fdba.jpg">
