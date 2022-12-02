@@ -2,7 +2,7 @@
 ------------
 ## 📝  기획의도
 
-<a href="busker.shop">busker.shop</a><br>
+<a href="https://busker.shop">busker.shop</a><br>
 
 여러분은 버스킹을 보신 적이 있나요? 늦은 시각 길거리에서 한 번쯤은 보셨을 거라 생각됩니다.
 
